@@ -30,7 +30,7 @@ const AuthStatus = () => {
         <div tabIndex={0} role="button">
           <div className="avatar">
             <div className="w-10 rounded-full">
-              <img src={session!.user!.image!} />
+              <img referrerPolicy="no-referrer" src={session?.user?.image!} />
             </div>
           </div>
         </div>
