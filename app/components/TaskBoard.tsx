@@ -1,10 +1,9 @@
 import React from "react";
-import Sidebar from "./Sidebar";
 
 const TaskBoard = ({ sidebar }: { sidebar: boolean }) => {
   return (
     <div
-      className={`border-t-[1px]  md:border-l-[1px]  border-zinc-600  ${
+      className={`md:border-l-[1px] border-zinc-600  ${
         sidebar ? "" : "col-span-2"
       }`}
     >
