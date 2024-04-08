@@ -8,6 +8,28 @@ const createTaskBoardSchema = z.object({
   title: z.string().min(1).max(25),
 });
 
+export async function GET(request: NextRequest) {
+  const session = await getServerSession(authOptions);
+  if (!session || !session.user || !session.user.email) {
+    return NextResponse.json(
+      { error: "User not authenticated" },
+      { status: 401 }
+    );
+  }
+
+  const taskBoards = await prisma.taskBoard.findMany({
+    where: {
+      createdBy: session!.user!.email!,
+    },
+  });
+
+  if (!taskBoards) {
+    return NextResponse.json({ status: 404 });
+  }
+
+  return NextResponse.json(taskBoards, { status: 200 });
+}
+
 export async function POST(request: NextRequest | any) {
   const body = await request.json();
   const validation = createTaskBoardSchema.safeParse(body);
