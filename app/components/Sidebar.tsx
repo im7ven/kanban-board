@@ -29,7 +29,9 @@ const Sidebar = ({ sidebar, onShowSideBar }: Props) => {
   return (
     <>
       {sidebar ? (
-        <TaskBoardMenu onShowSideBar={onShowSideBar} />
+        <div className="flex flex-col pr-5 py-4">
+          <TaskBoardMenu onShowSideBar={onShowSideBar} />
+        </div>
       ) : (
         <button
           onClick={onShowSideBar}
