@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
-import NewTaskBoardLink from "./NewTaskBoardLink";
 import { AiOutlineEyeInvisible } from "react-icons/ai";
 import { useSession } from "next-auth/react";
 import { TaskBoard } from "@prisma/client";
 import { CgBoard } from "react-icons/cg";
+import NewTaskBoardModal from "./NewTaskBoardModal";
 
 const TaskBoardMenu = ({ onShowSideBar }: { onShowSideBar?: () => void }) => {
   const [taskBoards, setTaskBoards] = useState<TaskBoard[]>([]);
@@ -43,7 +43,7 @@ const TaskBoardMenu = ({ onShowSideBar }: { onShowSideBar?: () => void }) => {
             </li>
           ))}
         </ul>
-        <NewTaskBoardLink />
+        <NewTaskBoardModal />
       </div>
       <div className="text-center">Theme Switch</div>
       <button

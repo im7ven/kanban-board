@@ -3,9 +3,11 @@ import { z } from "zod";
 import prisma from "@/prisma/client";
 import { getServerSession } from "next-auth";
 import authOptions from "@/app/auth/authOptions";
+import { tree } from "next/dist/build/templates/app-page";
 
 const createTaskBoardSchema = z.object({
   title: z.string().min(1).max(25),
+  columns: z.array(z.string()),
 });
 
 export async function GET(request: NextRequest) {
@@ -51,6 +53,14 @@ export async function POST(request: NextRequest | any) {
     data: {
       title: body.title,
       createdBy: session.user.email,
+      columns: {
+        create: validation.data.columns?.map((columnName: string) => ({
+          title: columnName,
+        })),
+      },
+    },
+    include: {
+      columns: true,
     },
   });
 
