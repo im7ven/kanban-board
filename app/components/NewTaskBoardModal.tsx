@@ -16,7 +16,7 @@ const NewTaskBoardModal = () => {
   const [columns, setColumns] = useState<string[]>([]);
 
   const handleAddColumn = () => {
-    setColumns([...columns, ""]); // Add a new empty column input
+    setColumns((prevColumns) => [...prevColumns, ""]);
   };
 
   const handleRemoveColumn = (index: number) => {
@@ -62,6 +62,7 @@ const NewTaskBoardModal = () => {
             ))}
             <div className="mt-3 space-y-3">
               <button
+                type="button"
                 onClick={handleAddColumn}
                 className="btn btn-block btn-outline"
               >
