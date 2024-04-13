@@ -29,7 +29,7 @@ const Sidebar = ({ sidebar, onShowSideBar }: Props) => {
   return (
     <>
       {sidebar ? (
-        <div className="flex flex-col pr-5 py-4">
+        <div className="hidden md:flex flex-col pr-5 py-4">
           <TaskBoardMenu onShowSideBar={onShowSideBar} />
         </div>
       ) : (
