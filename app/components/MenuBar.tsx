@@ -8,10 +8,10 @@ import TaskBoardMenu from "./TaskBoardMenu";
 
 const MenuBar = () => {
   return (
-    <div className="grow md:border-l-[1px] border-zinc-600 flex justify-between items-center px-5">
+    <div className="grow md:border-l-[1px] border-zinc-600 flex justify-between items-center px-2">
       <div className="flex items-center gap-1">
-        <h2>BoardName</h2>
         <MenuDropDown />
+        <h2>BoardName</h2>
       </div>
       <div>ADD TASK, !MenuIcon</div>
       <AuthStatus />
@@ -20,22 +20,17 @@ const MenuBar = () => {
 };
 
 const MenuDropDown = () => {
-  const dropDownModal = useRef<HTMLDialogElement>(null);
-
   return (
-    <div className="md:hidden">
-      <RiArrowDropDownLine
-        onClick={() => dropDownModal.current?.showModal()}
-        size="30"
-      />
-      <dialog ref={dropDownModal} id="menuDropDown" className="modal">
-        <div className="modal-box max-w-[20rem]">
-          <TaskBoardMenu />
-        </div>
-        <form method="dialog" className="modal-backdrop">
-          <button>close</button>
-        </form>
-      </dialog>
+    <div className=" md:hidden dropdown dropdown-bottom">
+      <div tabIndex={0} role="button">
+        <RiArrowDropDownLine size="30" />
+      </div>
+      <div
+        tabIndex={0}
+        className="dropdown-content z-[1] w-[18rem] p-2 shadow bg-neutral rounded-lg"
+      >
+        <TaskBoardMenu />
+      </div>
     </div>
   );
 };
