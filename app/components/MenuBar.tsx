@@ -38,7 +38,9 @@ const MenuDropDown = () => {
 const AuthStatus = () => {
   const { status, data: session } = useSession();
 
-  if (status === "loading") return null;
+  if (status === "loading") {
+    return <div className="skeleton w-[70px] h-10"></div>;
+  }
 
   if (status === "unauthenticated")
     return (
