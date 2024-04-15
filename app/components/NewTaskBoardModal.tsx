@@ -2,12 +2,11 @@
 import { useRef, useState } from "react";
 import { CgBoard } from "react-icons/cg";
 import { useForm } from "react-hook-form";
-import { AiOutlineClose } from "react-icons/ai";
 import axios from "axios";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { createTaskBoardSchema } from "../validationSchemas";
 import { z } from "zod";
-import { v4 as uuidv4 } from "uuid";
+import ValidationError from "./ValidationError";
 
 type TaskBoardForm = z.infer<typeof createTaskBoardSchema>;
 
@@ -60,17 +59,15 @@ const NewTaskBoardModal = () => {
               Title
               <input {...register("title")} type="text" className="grow" />
             </label>
-            {errors.title && errors.title.type === "required" && (
-              <div role="alert" className="mt-2 alert alert-error">
-                <span>{errors.title.message}</span>
-              </div>
+            {errors.title && (
+              <ValidationError errorMessage={errors.title.message!} />
             )}
 
             {columns.length > 0 && <h3 className="mt-3">Columns</h3>}
 
             {columns.map((column, index) => (
-              <div key={column} className="flex gap-2 items-center">
-                <label className="flex-1 input input-bordered flex items-center gap-2">
+              <div key={column} className="my-2">
+                <label className=" flex-1 input input-bordered flex items-center gap-2">
                   Title
                   <input
                     type="text"
@@ -80,6 +77,11 @@ const NewTaskBoardModal = () => {
                     })}
                   />
                 </label>
+                {errors.columns?.[index] && (
+                  <ValidationError
+                    errorMessage={errors.columns[index].message!}
+                  />
+                )}
               </div>
             ))}
 
@@ -94,12 +96,12 @@ const NewTaskBoardModal = () => {
               <div className="flex space-x-3">
                 <button
                   onClick={handleCancel}
-                  type="submit"
+                  type="button"
                   className="btn btn-danger grow "
                 >
                   Cancel
                 </button>
-                <button className="btn btn-primary grow">
+                <button type="submit" className="btn btn-primary grow">
                   Submit Task Board
                 </button>
               </div>
