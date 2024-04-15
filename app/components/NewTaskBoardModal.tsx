@@ -4,23 +4,36 @@ import { CgBoard } from "react-icons/cg";
 import { useForm } from "react-hook-form";
 import { AiOutlineClose } from "react-icons/ai";
 import axios from "axios";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { createTaskBoardSchema } from "../validationSchemas";
+import { z } from "zod";
+import { v4 as uuidv4 } from "uuid";
 
-interface TaskBoardForm {
-  title: string;
-  columns: string[];
-}
+type TaskBoardForm = z.infer<typeof createTaskBoardSchema>;
 
 const NewTaskBoardModal = () => {
   const newTaskBoardModal = useRef<HTMLDialogElement>(null);
-  const { register, handleSubmit } = useForm<TaskBoardForm>();
-  const [columns, setColumns] = useState<string[]>([]);
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    reset,
+    clearErrors,
+  } = useForm<TaskBoardForm>({
+    resolver: zodResolver(createTaskBoardSchema),
+  });
+  const [columns, setColumns] = useState<number[]>([]);
 
   const handleAddColumn = () => {
-    setColumns((prevColumns) => [...prevColumns, ""]);
+    const uniqueNumber = Math.floor(Math.random() * Number.MAX_SAFE_INTEGER);
+    setColumns((prevColumns) => [...prevColumns, uniqueNumber]);
   };
 
-  const handleRemoveColumn = (index: number) => {
-    setColumns(columns.filter((_, i) => i !== index)); // Remove the column input at the specified index
+  const handleCancel = () => {
+    newTaskBoardModal.current?.close();
+    clearErrors("title");
+    reset();
+    setColumns([]);
   };
 
   return (
@@ -30,7 +43,7 @@ const NewTaskBoardModal = () => {
         className="flex items-center gap-1 ml-3 mt-2"
       >
         <CgBoard size="20" />
-        <a className="link link-hover link-accent ">+Create New Board</a>
+        <a className="link link-hover link-secondary ">+Create New Board</a>
       </div>
       <dialog ref={newTaskBoardModal} id="newTaskBoardModal" className="modal">
         <div className="modal-box">
@@ -38,6 +51,8 @@ const NewTaskBoardModal = () => {
           <form
             onSubmit={handleSubmit((data) => {
               axios.post("/api/task-boards", data);
+              reset();
+              setColumns([]);
               newTaskBoardModal.current?.close();
             })}
           >
@@ -45,21 +60,29 @@ const NewTaskBoardModal = () => {
               Title
               <input {...register("title")} type="text" className="grow" />
             </label>
-            <h3 className="mt-3">Columns</h3>
+            {errors.title && errors.title.type === "required" && (
+              <div role="alert" className="mt-2 alert alert-error">
+                <span>{errors.title.message}</span>
+              </div>
+            )}
+
+            {columns.length > 0 && <h3 className="mt-3">Columns</h3>}
 
             {columns.map((column, index) => (
-              <div key={index} className="flex gap-2 items-center">
+              <div key={column} className="flex gap-2 items-center">
                 <label className="flex-1 input input-bordered flex items-center gap-2">
                   Title
                   <input
                     type="text"
                     className="grow"
-                    {...register(`columns.${index}`)}
+                    {...register(`columns.${index}`, {
+                      required: false,
+                    })}
                   />
                 </label>
-                <AiOutlineClose onClick={() => handleRemoveColumn(index)} />
               </div>
             ))}
+
             <div className="mt-3 space-y-3">
               <button
                 type="button"
@@ -68,9 +91,18 @@ const NewTaskBoardModal = () => {
               >
                 Add New Column
               </button>
-              <button type="submit" className="btn btn-primary btn-block">
-                Submit Task Board
-              </button>
+              <div className="flex space-x-3">
+                <button
+                  onClick={handleCancel}
+                  type="submit"
+                  className="btn btn-danger grow "
+                >
+                  Cancel
+                </button>
+                <button className="btn btn-primary grow">
+                  Submit Task Board
+                </button>
+              </div>
             </div>
           </form>
         </div>

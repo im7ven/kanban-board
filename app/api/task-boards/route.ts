@@ -1,14 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
-import { z } from "zod";
 import prisma from "@/prisma/client";
 import { getServerSession } from "next-auth";
 import authOptions from "@/app/auth/authOptions";
-import { tree } from "next/dist/build/templates/app-page";
-
-const createTaskBoardSchema = z.object({
-  title: z.string().min(1).max(25),
-  columns: z.array(z.string()),
-});
+import { createTaskBoardSchema } from "../../validationSchemas";
 
 export async function GET(request: NextRequest) {
   const session = await getServerSession(authOptions);
@@ -54,9 +48,10 @@ export async function POST(request: NextRequest | any) {
       title: body.title,
       createdBy: session.user.email,
       columns: {
-        create: validation.data.columns?.map((columnName: string) => ({
-          title: columnName,
-        })),
+        create:
+          validation.data.columns?.map((columnName: string) => ({
+            title: columnName,
+          })) || [], // If validation.data.columns is undefined, use an empty array
       },
     },
     include: {
