@@ -4,44 +4,55 @@ import { useSession } from "next-auth/react";
 import { TaskBoard } from "@prisma/client";
 import { CgBoard } from "react-icons/cg";
 import NewTaskBoardModal from "./NewTaskBoardModal";
+import { useQuery } from "@tanstack/react-query";
+import axios from "axios";
 
 const TaskBoardMenu = ({ onShowSideBar }: { onShowSideBar?: () => void }) => {
-  const [taskBoards, setTaskBoards] = useState<TaskBoard[]>([]);
-  const { data: session } = useSession();
-  useEffect(() => {
-    const fetchTaskBoards = async () => {
-      try {
-        const res = await fetch("/api/task-boards");
-        if (res.ok) {
-          const taskBoardData = await res.json();
-          setTaskBoards(taskBoardData);
-        }
-      } catch (error) {
-        console.error("Failed to fetch task boards", error);
-      }
-    };
-
-    if (session) {
-      fetchTaskBoards();
-    }
-  }, [session]);
+  const {
+    data: taskBoards,
+    isError,
+    isLoading,
+  } = useQuery<TaskBoard[]>({
+    queryKey: ["taskBoards"],
+    queryFn: () =>
+      axios
+        .get("api/task-boards")
+        .then((res) => res.data)
+        .catch((error) => {
+          throw new Error(
+            error.response?.data?.message || "Failed to fetch task boards."
+          );
+        }),
+    staleTime: 60 * 1000,
+    retry: 3,
+  });
 
   return (
     <div className="flex flex-col md:flex-1">
       <div className="md:flex-1">
-        <h2 className="mb-3 ml-3">All Boards ({taskBoards.length})</h2>
+        <h2 className="mb-3 ml-3">All Boards ({taskBoards?.length})</h2>
+
         <ul>
-          {taskBoards.map((board) => (
-            <li
-              className=" hover:bg-slate-600 rounded-r-full py-2 text-white cursor-pointer"
-              key={board.id}
-            >
-              <button className="flex items-center ml-3 gap-1">
-                <CgBoard size="20" />
-                {board.title}
-              </button>
-            </li>
-          ))}
+          {isLoading && (
+            <span className="ml-3 loading loading-spinner text-secondary"></span>
+          )}
+          {isError ? (
+            <p className="text-warning ml-3">
+              Sorry an unexpected error has occurred.
+            </p>
+          ) : (
+            taskBoards?.map((board) => (
+              <li
+                className=" hover:bg-slate-600 rounded-r-full py-2 text-white cursor-pointer"
+                key={board.id}
+              >
+                <button className="flex items-center ml-3 gap-1">
+                  <CgBoard size="20" />
+                  {board.title}
+                </button>
+              </li>
+            ))
+          )}
         </ul>
         <NewTaskBoardModal />
       </div>
