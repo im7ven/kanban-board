@@ -39,15 +39,8 @@ const AuthStatus = () => {
   const { status, data: session } = useSession();
 
   if (status === "loading") {
-    return <div className="skeleton w-[70px] h-10"></div>;
+    return <div className=" rounded-full skeleton w-[40px] h-10"></div>;
   }
-
-  if (status === "unauthenticated")
-    return (
-      <button className="btn btn-accent text-white">
-        <Link href="/api/auth/signin">Login</Link>
-      </button>
-    );
 
   return (
     <div className="h-10">
