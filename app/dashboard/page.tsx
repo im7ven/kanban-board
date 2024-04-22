@@ -1,10 +1,22 @@
 "use client";
 
-import { useState } from "react";
+import { useSession } from "next-auth/react";
 import MenuBar from "../components/MenuBar";
 import UserContent from "../components/UserContent";
+import { useRouter } from "next/navigation";
 
 export default function Home() {
+  const { data: session, status } = useSession();
+  const router = useRouter();
+
+  if (status === "loading") {
+    return <p>Loading...</p>;
+  }
+
+  if (!session) {
+    router.push("/");
+  }
+
   return (
     <main className="h-screen flex flex-col">
       <div className="h-[4rem] flex md:h-[5rem] lg:h-[6rem] border-b-[1px] border-zinc-600 ">
