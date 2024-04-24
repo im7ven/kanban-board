@@ -8,6 +8,16 @@ import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 
 const TaskBoardMenu = ({ onShowSideBar }: { onShowSideBar?: () => void }) => {
+  const { status } = useSession();
+  const [authenticated, setAuthenticated] = useState<boolean | null>(null);
+  useEffect(() => {
+    if (status === "authenticated") {
+      setAuthenticated(true);
+    } else {
+      setAuthenticated(false);
+    }
+  }, [status]);
+
   const {
     data: taskBoards,
     isError,
@@ -25,7 +35,19 @@ const TaskBoardMenu = ({ onShowSideBar }: { onShowSideBar?: () => void }) => {
         }),
     staleTime: 60 * 1000,
     retry: 3,
+    enabled: authenticated === true,
   });
+
+  if (authenticated === null) {
+    // If authentication status is still unknown, show loading spinner
+    return <div className="ml-3 loading loading-spinner text-secondary"></div>;
+  }
+
+  if (authenticated === false) {
+    return <p>Please sign in to view taskBoards</p>;
+  }
+
+  console.log("HERE!!!", authenticated);
 
   return (
     <div className="flex flex-col md:flex-1">

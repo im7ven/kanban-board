@@ -42,6 +42,14 @@ const AuthStatus = () => {
     return <div className=" rounded-full skeleton w-[40px] h-10"></div>;
   }
 
+  if (status === "unauthenticated") {
+    return (
+      <Link href="/api/auth/signin" className="btn btn-primary">
+        Login
+      </Link>
+    );
+  }
+
   return (
     <div className="h-10">
       <div className="dropdown dropdown-bottom dropdown-end">
