@@ -13,6 +13,8 @@ const TaskBoardMenu = ({ onShowSideBar }: { onShowSideBar?: () => void }) => {
   useEffect(() => {
     if (status === "authenticated") {
       setAuthenticated(true);
+    } else if (status === "loading") {
+      setAuthenticated(null);
     } else {
       setAuthenticated(false);
     }
