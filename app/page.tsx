@@ -1,9 +1,5 @@
-"use client";
-
-import { useSession } from "next-auth/react";
 import MenuBar from "./components/MenuBar";
 import UserContent from "./components/UserContent";
-import { useRouter } from "next/navigation";
 
 export default function Home() {
   return (
