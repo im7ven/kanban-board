@@ -1,26 +1,19 @@
 import React, { useEffect, useState } from "react";
 import { AiOutlineEyeInvisible } from "react-icons/ai";
-import { useSession } from "next-auth/react";
-import { TaskBoard } from "@prisma/client";
 import { CgBoard } from "react-icons/cg";
 import NewTaskBoardModal from "./NewTaskBoardModal";
-import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
 import useTaskBoards from "../hooks/useTaskBoards";
 
 const TaskBoardMenu = ({ onShowSideBar }: { onShowSideBar?: () => void }) => {
   const { isError, isLoading, taskBoards, authenticated } = useTaskBoards();
 
   if (authenticated === null) {
-    // If authentication status is still unknown, show loading spinner
     return <div className="ml-3 loading loading-spinner text-secondary"></div>;
   }
 
   if (authenticated === false) {
     return <p>Please sign in to view taskBoards</p>;
   }
-
-  console.log("HERE!!!", authenticated);
 
   return (
     <div className="flex flex-col md:flex-1">
