@@ -7,11 +7,19 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { createTaskBoardSchema } from "../validationSchemas";
 import { z } from "zod";
 import ValidationError from "./ValidationError";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { TaskBoard } from "@prisma/client";
 
 type TaskBoardForm = z.infer<typeof createTaskBoardSchema>;
 
 const NewTaskBoardModal = () => {
   const newTaskBoardModal = useRef<HTMLDialogElement>(null);
+  const queryClient = useQueryClient();
+  const { mutate: createTaskBoard } = useMutation(
+    (newTaskBoardData: { title: string; columns?: string[] }) =>
+      axios.post("/api/task-boards", newTaskBoardData)
+  );
+
   const {
     register,
     handleSubmit,
@@ -35,6 +43,19 @@ const NewTaskBoardModal = () => {
     setColumns([]);
   };
 
+  const onSubmit = (data: TaskBoardForm) => {
+    createTaskBoard(data, {
+      onSuccess: () => {
+        queryClient.invalidateQueries({
+          queryKey: ["taskBoards"],
+        });
+        reset();
+        setColumns([]);
+        newTaskBoardModal.current?.close();
+      },
+    });
+  };
+
   return (
     <>
       <div
@@ -47,14 +68,7 @@ const NewTaskBoardModal = () => {
       <dialog ref={newTaskBoardModal} id="newTaskBoardModal" className="modal">
         <div className="modal-box">
           <h2 className="mb-3">Create Task Board</h2>
-          <form
-            onSubmit={handleSubmit((data) => {
-              axios.post("/api/task-boards", data);
-              reset();
-              setColumns([]);
-              newTaskBoardModal.current?.close();
-            })}
-          >
+          <form onSubmit={handleSubmit(onSubmit)}>
             <label className="input input-bordered flex items-center gap-2">
               Title
               <input {...register("title")} type="text" className="grow" />
