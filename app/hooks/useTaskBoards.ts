@@ -1,8 +1,12 @@
-import { TaskBoard } from "@prisma/client";
+import { Column, TaskBoard as PrismaTaskBoard } from "@prisma/client";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { useSession } from "next-auth/react";
 import { useState, useEffect } from "react";
+
+interface TaskBoard extends PrismaTaskBoard {
+  columns: Column[];
+}
 
 const useTaskBoards = () => {
   const { status } = useSession();

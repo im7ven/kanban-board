@@ -17,6 +17,9 @@ export async function GET(request: NextRequest) {
     where: {
       createdBy: session!.user!.email!,
     },
+    include: {
+      columns: true,
+    },
   });
 
   if (!taskBoards) {
