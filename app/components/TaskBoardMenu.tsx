@@ -3,9 +3,12 @@ import { AiOutlineEyeInvisible } from "react-icons/ai";
 import { CgBoard } from "react-icons/cg";
 import NewTaskBoardModal from "./NewTaskBoardModal";
 import useTaskBoards from "../hooks/useTaskBoards";
+import useActiveTaskBorad from "../zustand/store";
 
 const TaskBoardMenu = ({ onShowSideBar }: { onShowSideBar?: () => void }) => {
   const { isError, isLoading, taskBoards, authenticated } = useTaskBoards();
+  const { setIsActive, activeBoard } = useActiveTaskBorad();
+  console.log("THIS ON IS ACTIVE:", activeBoard);
 
   if (authenticated === null) {
     return <div className="ml-3 loading loading-spinner text-secondary"></div>;
@@ -31,8 +34,11 @@ const TaskBoardMenu = ({ onShowSideBar }: { onShowSideBar?: () => void }) => {
           ) : (
             taskBoards?.map((board) => (
               <li
-                className=" hover:bg-slate-600 rounded-r-full py-2 text-white cursor-pointer"
+                className={`rounded-r-full py-3 cursor-pointer ${
+                  board === activeBoard ? "bg-primary text-white" : ""
+                }${board === activeBoard ? "" : " hover:bg-neutral"}`}
                 key={board.id}
+                onClick={() => setIsActive(board)}
               >
                 <button className="flex items-center ml-3 gap-1">
                   <CgBoard size="20" />
