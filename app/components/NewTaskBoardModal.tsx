@@ -63,7 +63,7 @@ const NewTaskBoardModal = () => {
         className="flex items-center gap-1 ml-3 mt-2"
       >
         <CgBoard size="20" />
-        <a className="link link-hover link-secondary ">+Create New Board</a>
+        <a className="link link-hover link-accent ">+Create New Board</a>
       </div>
       <dialog ref={newTaskBoardModal} id="newTaskBoardModal" className="modal">
         <div className="modal-box">
