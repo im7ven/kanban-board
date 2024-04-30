@@ -2,12 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-html {
-}
-
-body {
-  /* box-sizing: border-box; */
-}
 ::-webkit-scrollbar {
   display: none;
 }
@@ -39,6 +33,6 @@ body {
 
 @media screen and (min-width: 1024px) {
   .boardContainerHeight {
-    height: calc(100vh - 87.3px - 32px);
+    height: calc(100vh - 87.3px);
   }
 }
