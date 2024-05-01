@@ -8,8 +8,6 @@ import useActiveTaskBorad from "../zustand/store";
 const TaskBoardMenu = ({ onShowSideBar }: { onShowSideBar?: () => void }) => {
   const { isError, isLoading, taskBoards, authenticated } = useTaskBoards();
   const { setIsActive, activeBoard } = useActiveTaskBorad();
-  console.log("THIS ON IS ACTIVE:", activeBoard);
-
   if (authenticated === null) {
     return <div className="ml-3 loading loading-spinner text-secondary"></div>;
   }
