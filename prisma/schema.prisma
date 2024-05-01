@@ -87,7 +87,7 @@ model Task {
   id          Int       @id @default(autoincrement())
   title       String
   description String
-  status      String
+  status      Int
   columnId    Int       @map("column_id")
   createdAt   DateTime  @default(now())
   subtasks    Subtask[]
