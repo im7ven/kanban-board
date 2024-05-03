@@ -1,7 +1,8 @@
 import {
   Column as PrismaColumn,
-  Task,
+  Task as PrismaTask,
   TaskBoard as PrismaTaskBoard,
+  Subtask,
 } from "@prisma/client";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
@@ -15,6 +16,10 @@ interface TaskBoard extends PrismaTaskBoard {
 
 interface Column extends PrismaColumn {
   tasks: Task[]; // Assuming Task is another interface representing your Task model
+}
+
+interface Task extends PrismaTask {
+  subtasks: Subtask[];
 }
 
 const useTaskBoards = () => {

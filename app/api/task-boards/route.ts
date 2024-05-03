@@ -20,7 +20,11 @@ export async function GET(request: NextRequest) {
     include: {
       columns: {
         include: {
-          tasks: true,
+          tasks: {
+            include: {
+              subtasks: true,
+            },
+          },
         },
       },
     },

@@ -16,6 +16,13 @@ export async function POST(request: NextRequest) {
       title: body.title,
       description: body.description,
       columnId: parseInt(body.columnId),
+      subtasks: {
+        create:
+          validation.data.subtasks?.map((task: string) => ({
+            description: task,
+            status: false,
+          })) || [],
+      },
     },
   });
 

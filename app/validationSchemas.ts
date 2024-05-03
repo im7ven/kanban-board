@@ -25,4 +25,12 @@ export const createTaskSchema = z.object({
     .min(1, "Description is required")
     .max(255, "Maximum of 255 characters."),
   columnId: z.string(),
+  subtasks: z
+    .array(
+      z
+        .string()
+        .min(1, "Title is required when assigning subtasks to tasks.")
+        .max(35, "Maximum of 35 characters.")
+    )
+    .optional(),
 });
