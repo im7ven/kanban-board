@@ -5,15 +5,18 @@ import Link from "next/link";
 import React, { useRef } from "react";
 import { RiArrowDropDownLine } from "react-icons/ri";
 import TaskBoardMenu from "./TaskBoardMenu";
+import NewTaskModal from "./NewTaskModal";
+import useActiveTaskBorad from "../zustand/store";
 
 const MenuBar = () => {
+  const { activeBoard } = useActiveTaskBorad();
   return (
     <div className="grow md:border-l-[1px] border-zinc-600 flex justify-between items-center px-2">
       <div className="flex items-center gap-1">
         <MenuDropDown />
-        <h2>BoardName</h2>
+        <h2>{activeBoard ? activeBoard.title : "Task Board..."}</h2>
       </div>
-      <div>ADD TASK, !MenuIcon</div>
+      <NewTaskModal />
       <AuthStatus />
     </div>
   );
