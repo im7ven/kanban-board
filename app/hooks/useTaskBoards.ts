@@ -1,4 +1,8 @@
-import { Column, TaskBoard as PrismaTaskBoard } from "@prisma/client";
+import {
+  Column as PrismaColumn,
+  Task,
+  TaskBoard as PrismaTaskBoard,
+} from "@prisma/client";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { useSession } from "next-auth/react";
@@ -7,6 +11,10 @@ import useActiveTaskBorad from "../zustand/store";
 
 interface TaskBoard extends PrismaTaskBoard {
   columns: Column[];
+}
+
+interface Column extends PrismaColumn {
+  tasks: Task[]; // Assuming Task is another interface representing your Task model
 }
 
 const useTaskBoards = () => {
