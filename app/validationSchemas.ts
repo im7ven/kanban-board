@@ -14,3 +14,15 @@ export const createTaskBoardSchema = z.object({
     )
     .optional(),
 });
+
+export const createTaskSchema = z.object({
+  title: z
+    .string()
+    .min(1, "Title is required.")
+    .max(255, "Maximum of 255 characters."),
+  description: z
+    .string()
+    .min(1, "Description is required")
+    .max(255, "Maximum of 255 characters."),
+  columnId: z.string(),
+});

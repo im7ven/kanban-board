@@ -18,7 +18,11 @@ export async function GET(request: NextRequest) {
       createdBy: session!.user!.email!,
     },
     include: {
-      columns: true,
+      columns: {
+        include: {
+          tasks: true,
+        },
+      },
     },
   });
 
