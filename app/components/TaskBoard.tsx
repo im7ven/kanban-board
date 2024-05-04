@@ -1,7 +1,30 @@
 import React, { useRef } from "react";
 import useTaskBoards from "../hooks/useTaskBoards";
 import useActiveTaskBorad from "../zustand/store";
-import { Task } from "@prisma/client";
+import { Task, Column } from "../types";
+
+const ColumnComponent: React.FC<{ column: Column }> = ({ column }) => {
+  return (
+    <div className="w-[17.5rem] space-y-5">
+      <h2 className="tracking-widest uppercase">{column.title}</h2>
+      {column.tasks.map((task) => (
+        <TaskComponent key={task.id} task={task} />
+      ))}
+    </div>
+  );
+};
+
+const TaskComponent: React.FC<{ task: Task }> = ({ task }) => {
+  return (
+    <div className="space-y-5 bg-neutral rounded-lg p-4 shadow-xl">
+      <h3 className="text-white font-bold text-md">{task.title}</h3>
+      <p className="text-sm">{`${
+        task.subtasks.filter((sub) => sub.status === true).length
+      }/${task.subtasks.length} Subtasks Completed`}</p>
+      {/* Render subtasks here */}
+    </div>
+  );
+};
 
 const TaskBoard = ({ sidebar }: { sidebar: boolean }) => {
   const { taskBoards } = useTaskBoards();
@@ -17,15 +40,7 @@ const TaskBoard = ({ sidebar }: { sidebar: boolean }) => {
       }`}
     >
       {selectedBoard?.columns.map((col, index) => (
-        <div key={index} className="w-[17.5rem]">
-          <h2 className="relative">{col.title}</h2>
-          {col.tasks.map((task) => (
-            <div className=" space-y-5 bg-neutral rounded-lg p-4 ">
-              <h3 className="text-white font-bold">{task.title}</h3>
-              <p>{task.description}</p>
-            </div>
-          ))}
-        </div>
+        <ColumnComponent column={col} />
       ))}
     </div>
   );
