@@ -1,26 +1,9 @@
-import {
-  Column as PrismaColumn,
-  Task as PrismaTask,
-  TaskBoard as PrismaTaskBoard,
-  Subtask,
-} from "@prisma/client";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { useSession } from "next-auth/react";
 import { useState, useEffect } from "react";
 import useActiveTaskBorad from "../zustand/store";
-
-interface TaskBoard extends PrismaTaskBoard {
-  columns: Column[];
-}
-
-interface Column extends PrismaColumn {
-  tasks: Task[]; // Assuming Task is another interface representing your Task model
-}
-
-interface Task extends PrismaTask {
-  subtasks: Subtask[];
-}
+import { TaskBoard } from "../types";
 
 const useTaskBoards = () => {
   const { status } = useSession();
