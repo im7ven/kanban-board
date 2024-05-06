@@ -35,12 +35,12 @@ const TaskBoard = ({ sidebar }: { sidebar: boolean }) => {
 
   return (
     <div
-      className={`bg-base-300 gap-6 flex md:border-l border-zinc-600 p-4 overflow-x-auto boardContainerHeight  ${
+      className={`bg-base-300 gap-6 flex  p-4 overflow-x-auto boardContainerHeight  ${
         sidebar ? "" : "col-span-2"
       }`}
     >
-      {selectedBoard?.columns.map((col, index) => (
-        <ColumnComponent column={col} />
+      {selectedBoard?.columns.map((col) => (
+        <ColumnComponent key={col.id} column={col} />
       ))}
     </div>
   );
