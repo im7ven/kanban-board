@@ -8,21 +8,44 @@ import TaskBoardMenu from "./TaskBoardMenu";
 import NewTaskModal from "./NewTaskModal";
 import useActiveTaskBorad from "../zustand/store";
 
+type Status = "authenticated" | "loading" | "unauthenticated";
+
+interface Props {
+  status: Status;
+}
+
 const MenuBar = () => {
+  const { status, data: session } = useSession();
   const { activeBoard } = useActiveTaskBorad();
   return (
-    <div className="grow md:border-l-[1px] border-zinc-600 flex justify-between items-center px-2">
+    <div className="grow  flex justify-between items-center px-2">
       <div className="flex items-center gap-1">
-        <MenuDropDown />
-        <h2>{activeBoard ? activeBoard.title : "Task Board..."}</h2>
+        <MenuDropDown status={status} />
+        {status === "loading" ? (
+          <div className="skeleton w-[100px] h-10"></div>
+        ) : (
+          <h2 className="text-xl font-bold text-white">
+            {activeBoard ? activeBoard.title : "No Active Board"}
+          </h2>
+        )}
       </div>
-      <NewTaskModal />
+      {status === "loading" ? (
+        <div className="skeleton w-[140px] h-10"></div>
+      ) : (
+        <NewTaskModal />
+      )}
+
       <AuthStatus />
     </div>
   );
 };
 
-const MenuDropDown = () => {
+const MenuDropDown = ({ status }: { status: string }) => {
+  if (status === "loading") {
+    return (
+      <div className="md:hidden rounded-full skeleton w-[40px] h-10"></div>
+    );
+  }
   return (
     <div className=" md:hidden dropdown dropdown-bottom">
       <div tabIndex={0} role="button">
