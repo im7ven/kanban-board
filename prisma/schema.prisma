@@ -70,7 +70,7 @@ model TaskBoard {
   title     String
   createdBy String   @map("created_by")
   createdAt DateTime @default(now())
-  columns   Column[]
+  columns   Column[] 
   user      User     @relation(fields: [createdBy], references: [email])
 }
 
@@ -80,7 +80,7 @@ model Column {
   boardId   Int       @map("board_id")
   createdAt DateTime  @default(now())
   tasks     Task[]
-  taskBoard TaskBoard @relation(fields: [boardId], references: [id])
+  taskBoard TaskBoard @relation(fields: [boardId], references: [id], onDelete: Cascade)
 }
 
 model Task {
@@ -90,7 +90,7 @@ model Task {
   columnId    Int       @map("column_id")
   createdAt   DateTime  @default(now())
   subtasks    Subtask[]
-  column      Column    @relation(fields: [columnId], references: [id])
+  column      Column    @relation(fields: [columnId], references: [id], onDelete: Cascade)
 }
 
 model Subtask {
@@ -99,5 +99,5 @@ model Subtask {
   status      Boolean
   taskId      Int      @map("task_id")
   createdAt   DateTime @default(now())
-  task        Task     @relation(fields: [taskId], references: [id])
+  task        Task     @relation(fields: [taskId], references: [id], onDelete: Cascade)
 }
