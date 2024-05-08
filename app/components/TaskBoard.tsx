@@ -2,6 +2,7 @@ import React, { useRef } from "react";
 import useTaskBoards from "../hooks/useTaskBoards";
 import useActiveTaskBorad from "../zustand/store";
 import { Task, Column } from "../types";
+import { act } from "react-dom/test-utils";
 
 const ColumnComponent: React.FC<{ column: Column }> = ({ column }) => {
   return (
@@ -30,8 +31,9 @@ const TaskBoard = ({ sidebar }: { sidebar: boolean }) => {
   const { taskBoards } = useTaskBoards();
   const { activeBoard } = useActiveTaskBorad();
 
-  const selectedBoard = taskBoards?.find((board) => board === activeBoard);
-  console.log(selectedBoard?.columns);
+  const selectedBoard = taskBoards?.find(
+    (board) => board.id === activeBoard?.id
+  );
 
   return (
     <div
