@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
-import React, { Ref, useRef } from "react";
+import React, { useRef } from "react";
 import { SlOptionsVertical } from "react-icons/sl";
 import useActiveTaskBorad from "../zustand/store";
 
@@ -49,7 +49,6 @@ const DeleteBoardModal = ({
         queryClient.invalidateQueries({
           queryKey: ["taskBoards"],
         });
-
         deleteBoardModal.current?.close();
       },
     }

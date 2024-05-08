@@ -9,6 +9,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import ValidationError from "./ValidationError";
+import BoardOption from "./BoardOption";
 
 type TaskForm = z.infer<typeof createTaskSchema>;
 
@@ -63,17 +64,17 @@ const NewTaskModal = () => {
   };
 
   return (
-    <div className="space-x-3">
-      <button
-        onClick={() => newTaskModal.current?.showModal()}
-        // disabled={true}
-        className="btn btn-primary"
-      >
-        Add Task
-      </button>
-      <button>
-        <SlOptionsVertical />
-      </button>
+    <div>
+      <div className="flex items-center gap-3">
+        <button
+          onClick={() => newTaskModal.current?.showModal()}
+          // disabled={true}
+          className="btn btn-primary"
+        >
+          Add Task
+        </button>
+        <BoardOption />
+      </div>
       <dialog ref={newTaskModal} id="newTaskModal" className="modal">
         <div className="modal-box">
           <form onSubmit={handleSubmit(onSubmit)}>
