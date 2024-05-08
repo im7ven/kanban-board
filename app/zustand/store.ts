@@ -1,21 +1,22 @@
 import { TaskBoard } from "@prisma/client";
 import { create } from "zustand";
-import useTaskBoards from "../hooks/useTaskBoards";
 
 interface ActiveTaskBoardStore {
   activeBoard: TaskBoard | null;
-  DefaultBoard: (taskBoards: TaskBoard[]) => void;
-  setIsActive: (board: TaskBoard) => void;
+  defaultBoard: (taskBoards: TaskBoard[] | null) => void;
+  setIsActive: (board: TaskBoard | null) => void;
 }
 
 const useActiveTaskBorad = create<ActiveTaskBoardStore>((set) => ({
   activeBoard: null,
-  DefaultBoard: (taskBoards: TaskBoard[]) => {
+  defaultBoard: (taskBoards: TaskBoard[] | null) => {
     if (taskBoards && taskBoards.length > 0) {
       set({ activeBoard: taskBoards[0] });
+    } else {
+      set({ activeBoard: null });
     }
   },
-  setIsActive: (board: TaskBoard) => {
+  setIsActive: (board: TaskBoard | null) => {
     set({ activeBoard: board });
   },
 }));
