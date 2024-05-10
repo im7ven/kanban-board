@@ -28,11 +28,27 @@
 }
 
 .boardContainerHeight {
-  height: calc(100vh - 63.3px - 32px);
+  height: calc(100vh - 63.3px);
 }
 
+@media screen and (min-width: 768px) {
+  .boardContainerHeight {
+    height: calc(100vh - 80px);
+  }
+}
 @media screen and (min-width: 1024px) {
   .boardContainerHeight {
-    height: calc(100vh - 87.3px);
+    height: calc(100vh - 96px);
+  }
+}
+
+@media screen and (min-width: 768px) {
+  .boardContainerWidth {
+    width: calc(100vw - 292px);
+  }
+}
+@media screen and (min-width: 1024px) {
+  .boardContainerWidth {
+    width: calc(100vw - 324px);
   }
 }

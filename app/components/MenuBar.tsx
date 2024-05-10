@@ -2,7 +2,6 @@
 
 import { useSession } from "next-auth/react";
 import Link from "next/link";
-import React, { useRef } from "react";
 import { RiArrowDropDownLine } from "react-icons/ri";
 import TaskBoardMenu from "./TaskBoardMenu";
 import NewTaskModal from "./NewTaskModal";
@@ -10,23 +9,21 @@ import useActiveTaskBorad from "../zustand/store";
 
 type Status = "authenticated" | "loading" | "unauthenticated";
 
-interface Props {
-  status: Status;
-}
-
 const MenuBar = () => {
   const { status, data: session } = useSession();
   const { activeBoard } = useActiveTaskBorad();
   return (
-    <div className="grow  flex justify-between items-center px-2">
+    <div className=" max-w-[100vw] grow flex justify-between items-center px-2 min-h-[4rem]  md:min-h-[5rem] lg:h-[6rem] border-b-[1px] border-zinc-600">
       <div className="flex items-center gap-1">
-        <MenuDropDown status={status} />
         {status === "loading" ? (
           <div className="skeleton w-[100px] h-10"></div>
         ) : (
-          <h2 className="text-xl font-bold text-white">
-            {activeBoard ? activeBoard.title : "No Active Board"}
-          </h2>
+          <>
+            <MenuDropDown />
+            <h2 className="text-xl font-bold text-white">
+              {activeBoard ? activeBoard.title : "No Active Board"}
+            </h2>
+          </>
         )}
       </div>
       {status === "loading" ? (
@@ -40,12 +37,7 @@ const MenuBar = () => {
   );
 };
 
-const MenuDropDown = ({ status }: { status: string }) => {
-  if (status === "loading") {
-    return (
-      <div className="md:hidden rounded-full skeleton w-[40px] h-10"></div>
-    );
-  }
+const MenuDropDown = () => {
   return (
     <div className=" md:hidden dropdown dropdown-bottom">
       <div tabIndex={0} role="button">

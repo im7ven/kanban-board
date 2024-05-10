@@ -2,11 +2,10 @@ import React, { useRef } from "react";
 import useTaskBoards from "../hooks/useTaskBoards";
 import useActiveTaskBorad from "../zustand/store";
 import { Task, Column } from "../types";
-import { act } from "react-dom/test-utils";
 
-const ColumnComponent: React.FC<{ column: Column }> = ({ column }) => {
+const ColumnComponent = ({ column }: { column: Column }) => {
   return (
-    <div className="w-[17.5rem] space-y-5">
+    <div className="min-w-[17.5rem] space-y-5">
       <h2 className="tracking-widest uppercase">{column.title}</h2>
       {column.tasks.map((task) => (
         <TaskComponent key={task.id} task={task} />
@@ -15,7 +14,7 @@ const ColumnComponent: React.FC<{ column: Column }> = ({ column }) => {
   );
 };
 
-const TaskComponent: React.FC<{ task: Task }> = ({ task }) => {
+const TaskComponent = ({ task }: { task: Task }) => {
   return (
     <div className="space-y-5 bg-neutral rounded-lg p-4 shadow-xl">
       <h3 className="text-white font-bold text-md">{task.title}</h3>
@@ -27,7 +26,7 @@ const TaskComponent: React.FC<{ task: Task }> = ({ task }) => {
   );
 };
 
-const TaskBoard = ({ sidebar }: { sidebar: boolean }) => {
+const TaskBoard = ({ isSideBarVisible }: { isSideBarVisible: boolean }) => {
   const { taskBoards } = useTaskBoards();
   const { activeBoard } = useActiveTaskBorad();
 
@@ -37,8 +36,8 @@ const TaskBoard = ({ sidebar }: { sidebar: boolean }) => {
 
   return (
     <div
-      className={`bg-base-300 gap-6 flex  p-4 overflow-x-auto boardContainerHeight  ${
-        sidebar ? "" : "col-span-2"
+      className={`bg-base-300 gap-6 flex p-4 overflow-x-auto overflow-y-auto boardContainerHeight ${
+        isSideBarVisible ? "boardContainerWidth" : "w-[100vw] pl-[5rem]"
       }`}
     >
       {selectedBoard?.columns.map((col) => (
