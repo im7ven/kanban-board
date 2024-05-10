@@ -6,12 +6,18 @@ import useActiveTaskBorad from "../zustand/store";
 
 const BoardOption = () => {
   const deleteBoardModal = useRef<HTMLDialogElement>(null);
+  const { activeBoard } = useActiveTaskBorad();
 
   return (
     <div className="dropdown">
-      <div tabIndex={0} role="button" className=" m-1">
+      <button
+        disabled={!activeBoard}
+        tabIndex={0}
+        role="button"
+        className=" m-1"
+      >
         <SlOptionsVertical />
-      </div>
+      </button>
       <ul
         tabIndex={0}
         className="dropdown-content z-[1] menu p-2 shadow bg-base-300 rounded-box w-52 space-y-3"

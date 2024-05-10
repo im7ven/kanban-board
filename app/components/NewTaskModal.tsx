@@ -68,7 +68,7 @@ const NewTaskModal = () => {
       <div className="flex items-center gap-3">
         <button
           onClick={() => newTaskModal.current?.showModal()}
-          // disabled={true}
+          disabled={!activeBoard}
           className="btn btn-primary"
         >
           Add Task
