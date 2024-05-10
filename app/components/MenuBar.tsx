@@ -13,14 +13,14 @@ const MenuBar = () => {
   const { status, data: session } = useSession();
   const { activeBoard } = useActiveTaskBorad();
   return (
-    <div className=" max-w-[100vw] grow flex justify-between items-center px-6 min-h-[4rem]  md:min-h-[5rem] lg:h-[6rem] border-b-[1px] border-zinc-600">
+    <div className=" max-w-[100vw] grow flex justify-between items-center px-2 md:px-6 min-h-[4rem]  md:min-h-[5rem] lg:h-[6rem] border-b-[1px] border-zinc-600">
       <div className="flex items-center gap-1">
         {status === "loading" ? (
           <div className="skeleton w-[100px] h-10"></div>
         ) : (
           <>
             <MenuDropDown />
-            <h2 className="text-xl font-bold text-white">
+            <h2 className="md:text-xl font-bold text-white">
               {activeBoard ? activeBoard.title : "No Active Board"}
             </h2>
           </>
