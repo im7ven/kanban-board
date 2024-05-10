@@ -17,7 +17,7 @@ const TaskBoardMenu = ({ onShowSideBar }: { onShowSideBar?: () => void }) => {
   }
 
   return (
-    <div className="flex flex-col md:flex-1">
+    <div className="flex flex-col md:flex-1 md:mt-7">
       <div className="md:flex-1">
         <h2 className="mb-3 ml-3">All Boards ({taskBoards?.length})</h2>
 

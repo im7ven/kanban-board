@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { AiOutlineEye } from "react-icons/ai";
 import NewTaskBoardLink from "./NewTaskBoardModal";
 import TaskBoardMenu from "./TaskBoardMenu";
+import Image from "next/image";
 
 interface Props {
   sidebar: boolean;
@@ -29,9 +30,22 @@ const Sidebar = ({ sidebar, onShowSideBar }: Props) => {
   return (
     <>
       {sidebar ? (
-        <div className="hidden md:flex flex-col pr-5 py-4">
-          <TaskBoardMenu onShowSideBar={onShowSideBar} />
-        </div>
+        <>
+          <div className="hidden md:flex flex-col pr-5 py-4 border-r-[1px] border-zinc-600">
+            <div className="gap-4 px-3 md:w-[17rem] lg:w-[19rem] hidden md:flex">
+              <Image
+                src="/taskmanager-logo.png"
+                width="60"
+                height="60"
+                alt="logo"
+              />
+              <h1 className=" font-bold text-white text-2xl self-center">
+                KANBAN
+              </h1>
+            </div>
+            <TaskBoardMenu onShowSideBar={onShowSideBar} />
+          </div>
+        </>
       ) : (
         <button
           onClick={onShowSideBar}
