@@ -8,7 +8,6 @@ import { createTaskBoardSchema } from "../validationSchemas";
 import { z } from "zod";
 import ValidationError from "./ValidationError";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { TaskBoard } from "@prisma/client";
 
 type TaskBoardForm = z.infer<typeof createTaskBoardSchema>;
 

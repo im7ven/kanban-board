@@ -16,7 +16,6 @@ type TaskForm = z.infer<typeof createTaskSchema>;
 const NewTaskModal = () => {
   const newTaskModal = useRef<HTMLDialogElement>(null);
   const { activeBoard } = useActiveTaskBorad();
-  const { taskBoards } = useTaskBoards();
   const queryClient = useQueryClient();
   const [subTasks, setSubTasks] = useState<number[]>([]);
   const {
@@ -39,8 +38,6 @@ const NewTaskModal = () => {
     const uniqueNumber = Math.floor(Math.random() * Number.MAX_SAFE_INTEGER);
     setSubTasks((prevColumns) => [...prevColumns, uniqueNumber]);
   };
-
-  const currentBoard = taskBoards?.find((board) => board === activeBoard);
 
   const onSubmit = (data: TaskForm) => {
     console.log(data);
@@ -143,8 +140,9 @@ const NewTaskModal = () => {
               <select
                 {...register("columnId")}
                 className="select select-bordered"
+                defaultValue={activeBoard?.columns?.[0].id.toString()}
               >
-                {currentBoard?.columns.map((col) => (
+                {activeBoard?.columns.map((col) => (
                   <option value={col.id} key={col.id}>
                     {col.title}
                   </option>

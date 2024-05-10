@@ -1,5 +1,5 @@
-import { TaskBoard } from "@prisma/client";
 import { create } from "zustand";
+import { TaskBoard } from "../types";
 
 interface ActiveTaskBoardStore {
   activeBoard: TaskBoard | null;
