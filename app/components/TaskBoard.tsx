@@ -30,8 +30,6 @@ const TaskBoard = ({ isSideBarVisible }: { isSideBarVisible: boolean }) => {
   const { activeBoard } = useActiveTaskBorad();
   const { taskBoards } = useTaskBoards();
 
-  console.log(activeBoard);
-  console.log(activeBoard?.columns?.length);
   return (
     <div
       className={`bg-base-300 gap-6 flex p-4 overflow-x-auto overflow-y-auto boardContainerHeight ${

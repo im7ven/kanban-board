@@ -63,14 +63,17 @@ const NewTaskModal = () => {
     setSubTasks([]);
   };
 
-  console.log(activeBoard);
-
   return (
     <div>
       <div className="flex items-center gap-3">
         <button
           onClick={() => newTaskModal.current?.showModal()}
-          disabled={!activeBoard}
+          disabled={
+            (taskBoards && taskBoards.length < 1) ||
+            (activeBoard !== null && activeBoard.columns.length < 1)
+              ? true
+              : false
+          }
           className="btn btn-primary"
         >
           Add Task
