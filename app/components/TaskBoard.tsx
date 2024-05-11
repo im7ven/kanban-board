@@ -27,22 +27,43 @@ const TaskComponent = ({ task }: { task: Task }) => {
 };
 
 const TaskBoard = ({ isSideBarVisible }: { isSideBarVisible: boolean }) => {
-  const { taskBoards } = useTaskBoards();
   const { activeBoard } = useActiveTaskBorad();
+  const { taskBoards } = useTaskBoards();
 
-  const selectedBoard = taskBoards?.find(
-    (board) => board.id === activeBoard?.id
-  );
-
+  console.log(activeBoard);
+  console.log(activeBoard?.columns?.length);
   return (
     <div
       className={`bg-base-300 gap-6 flex p-4 overflow-x-auto overflow-y-auto boardContainerHeight ${
         isSideBarVisible ? "boardContainerWidth" : "w-[100vw] pl-[5rem]"
+      } ${
+        (taskBoards && taskBoards.length < 1) ||
+        (activeBoard && activeBoard?.columns.length < 1)
+          ? "justify-center items-center"
+          : ""
       }`}
     >
-      {selectedBoard?.columns.map((col) => (
-        <ColumnComponent key={col.id} column={col} />
-      ))}
+      {taskBoards && taskBoards.length < 1 ? (
+        <p className="text-white text-lg text-center">
+          You Currently have no boards. Create a new board to get started.
+        </p>
+      ) : activeBoard && activeBoard?.columns.length < 1 ? (
+        <div className="flex flex-col justify-center gap-3">
+          <p
+            className="text-white text-lg text-center
+          "
+          >
+            This board is empty. Create a new column to get started.
+          </p>
+          <button className="btn btn-primary max-w-full mx-auto">
+            +Add New Column
+          </button>
+        </div>
+      ) : (
+        activeBoard?.columns.map((col) => (
+          <ColumnComponent key={col.id} column={col} />
+        ))
+      )}
     </div>
   );
 };
