@@ -1,6 +1,6 @@
 import React, { useRef } from "react";
 import useTaskBoards from "../hooks/useTaskBoards";
-import useActiveTaskBorad from "../zustand/store";
+import useActiveTaskBoard from "../zustand/store";
 import { Task, Column } from "../types";
 
 const ColumnComponent = ({ column }: { column: Column }) => {
@@ -27,7 +27,7 @@ const TaskComponent = ({ task }: { task: Task }) => {
 };
 
 const TaskBoard = ({ isSideBarVisible }: { isSideBarVisible: boolean }) => {
-  const { activeBoard } = useActiveTaskBorad();
+  const { activeBoard } = useActiveTaskBoard();
   const { taskBoards } = useTaskBoards();
 
   return (

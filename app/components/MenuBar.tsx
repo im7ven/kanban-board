@@ -5,13 +5,13 @@ import Link from "next/link";
 import { RiArrowDropDownLine } from "react-icons/ri";
 import TaskBoardMenu from "./TaskBoardMenu";
 import NewTaskModal from "./NewTaskModal";
-import useActiveTaskBorad from "../zustand/store";
+import useActiveTaskBoard from "../zustand/store";
 
 type Status = "authenticated" | "loading" | "unauthenticated";
 
 const MenuBar = () => {
   const { status, data: session } = useSession();
-  const { activeBoard } = useActiveTaskBorad();
+  const { activeBoard } = useActiveTaskBoard();
   return (
     <div className=" max-w-[100vw] grow flex justify-between items-center px-2 md:px-6 min-h-[4rem]  md:min-h-[5rem] lg:h-[6rem] border-b-[1px] border-zinc-600">
       <div className="flex items-center gap-1">

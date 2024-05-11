@@ -7,7 +7,7 @@ interface ActiveTaskBoardStore {
   setIsActive: (board: TaskBoard | null) => void;
 }
 
-const useActiveTaskBorad = create<ActiveTaskBoardStore>((set) => ({
+const useActiveTaskBoard = create<ActiveTaskBoardStore>((set) => ({
   activeBoard: null,
   defaultBoard: (taskBoards: TaskBoard[] | null) => {
     if (taskBoards && taskBoards.length > 0) {
@@ -21,4 +21,4 @@ const useActiveTaskBorad = create<ActiveTaskBoardStore>((set) => ({
   },
 }));
 
-export default useActiveTaskBorad;
+export default useActiveTaskBoard;

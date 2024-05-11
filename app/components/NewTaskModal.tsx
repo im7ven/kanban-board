@@ -1,7 +1,7 @@
 import React, { useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { SlOptionsVertical } from "react-icons/sl";
-import useActiveTaskBorad from "../zustand/store";
+import useActiveTaskBoard from "../zustand/store";
 import useTaskBoards from "../hooks/useTaskBoards";
 import { createTaskSchema } from "../validationSchemas";
 import { z } from "zod";
@@ -15,7 +15,7 @@ type TaskForm = z.infer<typeof createTaskSchema>;
 
 const NewTaskModal = () => {
   const newTaskModal = useRef<HTMLDialogElement>(null);
-  const { activeBoard } = useActiveTaskBorad();
+  const { activeBoard } = useActiveTaskBoard();
   const { taskBoards } = useTaskBoards();
   const queryClient = useQueryClient();
   const [subTasks, setSubTasks] = useState<number[]>([]);

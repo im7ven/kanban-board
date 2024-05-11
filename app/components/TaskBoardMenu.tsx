@@ -3,11 +3,11 @@ import { AiOutlineEyeInvisible } from "react-icons/ai";
 import { CgBoard } from "react-icons/cg";
 import NewTaskBoardModal from "./NewTaskBoardModal";
 import useTaskBoards from "../hooks/useTaskBoards";
-import useActiveTaskBorad from "../zustand/store";
+import useActiveTaskBoard from "../zustand/store";
 
 const TaskBoardMenu = ({ onShowSideBar }: { onShowSideBar?: () => void }) => {
   const { isError, isLoading, taskBoards, authenticated } = useTaskBoards();
-  const { setIsActive, activeBoard } = useActiveTaskBorad();
+  const { setIsActive, activeBoard } = useActiveTaskBoard();
   if (authenticated === null) {
     return <div className="ml-3 loading loading-spinner text-secondary"></div>;
   }

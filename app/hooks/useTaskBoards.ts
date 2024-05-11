@@ -2,12 +2,12 @@ import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { useSession } from "next-auth/react";
 import { useState, useEffect } from "react";
-import useActiveTaskBorad from "../zustand/store";
+import useActiveTaskBoard from "../zustand/store";
 import { TaskBoard } from "../types";
 
 const useTaskBoards = () => {
   const { status } = useSession();
-  const { defaultBoard } = useActiveTaskBorad();
+  const { defaultBoard } = useActiveTaskBoard();
   const [authenticated, setAuthenticated] = useState<boolean | null>(null);
   useEffect(() => {
     if (status === "authenticated") {

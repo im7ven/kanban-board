@@ -2,11 +2,11 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import React, { useRef } from "react";
 import { SlOptionsVertical } from "react-icons/sl";
-import useActiveTaskBorad from "../zustand/store";
+import useActiveTaskBoard from "../zustand/store";
 
 const BoardOption = () => {
   const deleteBoardModal = useRef<HTMLDialogElement>(null);
-  const { activeBoard } = useActiveTaskBorad();
+  const { activeBoard } = useActiveTaskBoard();
 
   return (
     <div className="dropdown">
@@ -42,7 +42,7 @@ const DeleteBoardModal = ({
 }: {
   deleteBoardModal: React.RefObject<HTMLDialogElement>;
 }) => {
-  const { activeBoard } = useActiveTaskBorad();
+  const { activeBoard } = useActiveTaskBoard();
   const queryClient = useQueryClient();
   const { mutate: deleteBoard } = useMutation(
     async () => {
