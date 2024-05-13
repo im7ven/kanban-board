@@ -70,7 +70,7 @@ model TaskBoard {
   title     String
   createdBy String   @map("created_by")
   createdAt DateTime @default(now())
-  columns   Column[] 
+  columns   Column[]
   user      User     @relation(fields: [createdBy], references: [email])
 }
 
@@ -81,6 +81,7 @@ model Column {
   createdAt DateTime  @default(now())
   tasks     Task[]
   taskBoard TaskBoard @relation(fields: [boardId], references: [id], onDelete: Cascade)
+  
 }
 
 model Task {
