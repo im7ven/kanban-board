@@ -3,6 +3,11 @@ import useTaskBoards from "../hooks/useTaskBoards";
 import useActiveTaskBoard from "../zustand/store";
 import { Task, Column } from "../types";
 
+interface TaskBoardProps {
+  isSideBarVisible: boolean;
+  onEdit: () => void;
+}
+
 const ColumnComponent = ({ column }: { column: Column }) => {
   return (
     <div className="min-w-[17.5rem] space-y-5">
@@ -26,7 +31,7 @@ const TaskComponent = ({ task }: { task: Task }) => {
   );
 };
 
-const TaskBoard = ({ isSideBarVisible }: { isSideBarVisible: boolean }) => {
+const TaskBoard = ({ isSideBarVisible, onEdit }: TaskBoardProps) => {
   const { activeBoard } = useActiveTaskBoard();
   const { taskBoards } = useTaskBoards();
 
@@ -53,7 +58,10 @@ const TaskBoard = ({ isSideBarVisible }: { isSideBarVisible: boolean }) => {
           >
             This board is empty. Create a new column to get started.
           </p>
-          <button className="btn btn-primary max-w-full mx-auto">
+          <button
+            onClick={() => onEdit()}
+            className="btn btn-primary max-w-full mx-auto"
+          >
             +Add New Column
           </button>
         </div>

@@ -13,7 +13,7 @@ import BoardOption from "./BoardOption";
 
 type TaskForm = z.infer<typeof createTaskSchema>;
 
-const NewTaskModal = () => {
+const NewTaskModal = ({ onEdit }: { onEdit: () => void }) => {
   const newTaskModal = useRef<HTMLDialogElement>(null);
   const { activeBoard } = useActiveTaskBoard();
   const { taskBoards } = useTaskBoards();
@@ -78,7 +78,7 @@ const NewTaskModal = () => {
         >
           Add Task
         </button>
-        <BoardOption />
+        <BoardOption onEdit={onEdit} />
       </div>
       <dialog ref={newTaskModal} id="newTaskModal" className="modal">
         <div className="modal-box">

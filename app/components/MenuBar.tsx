@@ -9,7 +9,7 @@ import useActiveTaskBoard from "../zustand/store";
 
 type Status = "authenticated" | "loading" | "unauthenticated";
 
-const MenuBar = () => {
+const MenuBar = ({ onEdit }: { onEdit: () => void }) => {
   const { status, data: session } = useSession();
   const { activeBoard } = useActiveTaskBoard();
   return (
@@ -29,7 +29,7 @@ const MenuBar = () => {
       {status === "loading" ? (
         <div className="skeleton w-[140px] h-10"></div>
       ) : (
-        <NewTaskModal />
+        <NewTaskModal onEdit={onEdit} />
       )}
 
       <AuthStatus />

@@ -4,7 +4,7 @@ import React, { useRef } from "react";
 import { SlOptionsVertical } from "react-icons/sl";
 import useActiveTaskBoard from "../zustand/store";
 
-const BoardOption = () => {
+const BoardOption = ({ onEdit }: { onEdit: () => void }) => {
   const deleteBoardModal = useRef<HTMLDialogElement>(null);
   const { activeBoard } = useActiveTaskBoard();
 
@@ -22,7 +22,10 @@ const BoardOption = () => {
         tabIndex={0}
         className="dropdown-content z-[1] menu p-2 shadow bg-base-300 rounded-box w-52 space-y-3"
       >
-        <li className="hover:bg-base-100 p-2 rounded-lg cursor-pointer">
+        <li
+          onClick={() => onEdit()}
+          className="hover:bg-base-100 p-2 rounded-lg cursor-pointer"
+        >
           Edit Board
         </li>
         <li
