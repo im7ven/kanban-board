@@ -49,5 +49,4 @@ export const updateTaskBoardSchema = z.object({
         .max(15, "Maximum of 15 characters"),
     })
   ),
-  isNew: z.boolean().optional(),
 });
