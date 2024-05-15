@@ -7,6 +7,7 @@ import { updateTaskBoardSchema } from "../validationSchemas";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { RiCloseLine } from "react-icons/ri";
 import ValidationError from "./ValidationError";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 interface Props {
   editModalRef: React.RefObject<HTMLDialogElement>;
@@ -22,6 +23,7 @@ type EditTaskBoardForm = z.infer<typeof updateTaskBoardSchema>;
 const EditTaskModal: React.FC<Props> = ({ editModalRef }) => {
   const { activeBoard } = useActiveTaskBoard();
   const [existingColumns, setExistingColumns] = useState<Column[]>([]);
+  const queryClient = useQueryClient();
 
   const {
     register,
@@ -33,11 +35,22 @@ const EditTaskModal: React.FC<Props> = ({ editModalRef }) => {
     resolver: zodResolver(updateTaskBoardSchema),
   });
 
-  console.log(existingColumns);
-
   const { fields, append, remove } = useFieldArray({
     name: "columns",
     control,
+  });
+
+  const updateTaskBoard = async (data: EditTaskBoardForm) => {
+    await axios.patch(`/api/task-boards/${activeBoard?.id.toString()}`, data);
+  };
+
+  const mutation = useMutation(updateTaskBoard, {
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["taskBoards"],
+      });
+      editModalRef.current?.close();
+    },
   });
 
   useEffect(() => {
@@ -56,13 +69,10 @@ const EditTaskModal: React.FC<Props> = ({ editModalRef }) => {
   }, [existingColumns, activeBoard]);
 
   const onSubmit = async (data: EditTaskBoardForm) => {
-    try {
-      await axios.patch(`/api/task-boards/${activeBoard?.id.toString()}`, data);
-    } catch (error) {
-      throw new Error("Failed to update task board");
-    }
+    mutation.mutate(data);
   };
 
+  console.log(activeBoard?.columns);
   return (
     <div>
       <dialog ref={editModalRef} id="my_modal_2" className="modal">
@@ -86,8 +96,8 @@ const EditTaskModal: React.FC<Props> = ({ editModalRef }) => {
             <div className="my-3">
               {fields.map((field, index) => {
                 return (
-                  <>
-                    <div className="flex items-end gap-3" key={field.id}>
+                  <div key={field.id}>
+                    <div className="flex items-end gap-3">
                       <label className="form-control w-full">
                         <div className="label">
                           <span className="label-text">Column</span>
@@ -109,7 +119,7 @@ const EditTaskModal: React.FC<Props> = ({ editModalRef }) => {
                         errorMessage={errors.columns?.[index]?.title?.message}
                       />
                     )}
-                  </>
+                  </div>
                 );
               })}
             </div>
