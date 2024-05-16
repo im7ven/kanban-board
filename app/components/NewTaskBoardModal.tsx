@@ -35,18 +35,11 @@ const NewTaskBoardModal = () => {
     name: "columns",
     control,
   });
-  const [columns, setColumns] = useState<number[]>([]);
-
-  const handleAddColumn = () => {
-    const uniqueNumber = Math.floor(Math.random() * Number.MAX_SAFE_INTEGER);
-    setColumns((prevColumns) => [...prevColumns, uniqueNumber]);
-  };
 
   const handleCancel = () => {
     newTaskBoardModal.current?.close();
     clearErrors("title");
     reset();
-    setColumns([]);
   };
 
   const onSubmit = (data: TaskBoardForm) => {
@@ -56,7 +49,6 @@ const NewTaskBoardModal = () => {
           queryKey: ["taskBoards"],
         });
         reset();
-        setColumns([]);
         newTaskBoardModal.current?.close();
       },
     });
@@ -82,8 +74,6 @@ const NewTaskBoardModal = () => {
             {errors.title && (
               <ValidationError errorMessage={errors.title.message!} />
             )}
-
-            {columns.length > 0 && <h3 className="mt-3">Columns</h3>}
 
             {fields.map((field, index) => {
               return (
