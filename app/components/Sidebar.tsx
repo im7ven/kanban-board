@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { AiOutlineEye } from "react-icons/ai";
-import NewTaskBoardLink from "./NewTaskBoardModal";
 import TaskBoardMenu from "./TaskBoardMenu";
 import Image from "next/image";
 

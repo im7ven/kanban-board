@@ -1,4 +1,3 @@
-import React, { useRef } from "react";
 import useTaskBoards from "../hooks/useTaskBoards";
 import useActiveTaskBoard from "../zustand/store";
 import { Task, Column } from "../types";

@@ -1,4 +1,3 @@
-import React, { useEffect, useState } from "react";
 import { AiOutlineEyeInvisible } from "react-icons/ai";
 import { CgBoard } from "react-icons/cg";
 import NewTaskBoardModal from "./NewTaskBoardModal";

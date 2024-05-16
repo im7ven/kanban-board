@@ -90,9 +90,9 @@ const NewTaskBoardModal = () => {
                     })}
                   />
                 </label>
-                {errors.columns?.[index] && (
+                {errors?.columns?.[index]?.message && (
                   <ValidationError
-                    errorMessage={errors.columns[index].message!}
+                    errorMessage={errors.columns[index]?.message || ""}
                   />
                 )}
               </div>

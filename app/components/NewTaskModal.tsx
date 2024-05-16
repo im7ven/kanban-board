@@ -1,6 +1,5 @@
 import React, { useRef, useState } from "react";
 import { useForm } from "react-hook-form";
-import { SlOptionsVertical } from "react-icons/sl";
 import useActiveTaskBoard from "../zustand/store";
 import useTaskBoards from "../hooks/useTaskBoards";
 import { createTaskSchema } from "../validationSchemas";
@@ -126,9 +125,9 @@ const NewTaskModal = ({ onEdit }: { onEdit: () => void }) => {
                     })}
                   />
                 </label>
-                {errors.subtasks?.[index] && (
+                {errors.subtasks?.[index]?.message && (
                   <ValidationError
-                    errorMessage={errors.subtasks[index].message!}
+                    errorMessage={errors.subtasks[index]?.message || ""}
                   />
                 )}
               </div>

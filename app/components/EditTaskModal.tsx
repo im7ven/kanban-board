@@ -116,7 +116,9 @@ const EditTaskModal: React.FC<Props> = ({ editModalRef }) => {
                     </div>
                     {errors.columns?.[index]?.title?.message && (
                       <ValidationError
-                        errorMessage={errors.columns?.[index]?.title?.message}
+                        errorMessage={
+                          errors.columns[index]?.title?.message || ""
+                        }
                       />
                     )}
                   </div>
