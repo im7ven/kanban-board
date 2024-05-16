@@ -60,8 +60,8 @@ export async function POST(request: NextRequest | any) {
       createdBy: session.user.email,
       columns: {
         create:
-          validation.data.columns?.map((columnName: string) => ({
-            title: columnName,
+          validation.data.columns?.map((col: { title: string }) => ({
+            title: col.title,
           })) || [], // If validation.data.columns is undefined, use an empty array
       },
     },

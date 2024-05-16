@@ -1,13 +1,14 @@
 "use client";
 import { useRef, useState } from "react";
 import { CgBoard } from "react-icons/cg";
-import { useForm } from "react-hook-form";
+import { useFieldArray, useForm } from "react-hook-form";
 import axios from "axios";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { createTaskBoardSchema } from "../validationSchemas";
 import { z } from "zod";
 import ValidationError from "./ValidationError";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { RiCloseLine } from "react-icons/ri";
 
 type TaskBoardForm = z.infer<typeof createTaskBoardSchema>;
 
@@ -15,7 +16,7 @@ const NewTaskBoardModal = () => {
   const newTaskBoardModal = useRef<HTMLDialogElement>(null);
   const queryClient = useQueryClient();
   const { mutate: createTaskBoard } = useMutation(
-    (newTaskBoardData: { title: string; columns?: string[] }) =>
+    (newTaskBoardData: { title: string; columns?: { title: string }[] }) =>
       axios.post("/api/task-boards", newTaskBoardData)
   );
 
@@ -25,8 +26,14 @@ const NewTaskBoardModal = () => {
     formState: { errors },
     reset,
     clearErrors,
+    control,
   } = useForm<TaskBoardForm>({
     resolver: zodResolver(createTaskBoardSchema),
+  });
+
+  const { fields, remove, append } = useFieldArray({
+    name: "columns",
+    control,
   });
   const [columns, setColumns] = useState<number[]>([]);
 
@@ -78,30 +85,39 @@ const NewTaskBoardModal = () => {
 
             {columns.length > 0 && <h3 className="mt-3">Columns</h3>}
 
-            {columns.map((column, index) => (
-              <div key={column} className="my-2">
-                <label className=" flex-1 input input-bordered flex items-center gap-2">
-                  Title
-                  <input
-                    type="text"
-                    className="grow"
-                    {...register(`columns.${index}`, {
-                      required: false,
-                    })}
-                  />
-                </label>
-                {errors?.columns?.[index]?.message && (
-                  <ValidationError
-                    errorMessage={errors.columns[index]?.message || ""}
-                  />
-                )}
-              </div>
-            ))}
+            {fields.map((field, index) => {
+              return (
+                <div key={field.id}>
+                  <div className="flex items-end gap-3">
+                    <label className="form-control w-full">
+                      <div className="label">
+                        <span className="label-text">Column</span>
+                      </div>
+                      <input
+                        {...register(`columns.${index}.title` as const)}
+                        type="text"
+                        placeholder="e.g. Refactor"
+                        className="input input-bordered w-full "
+                      />
+                    </label>
+
+                    <button onClick={() => remove(index)} className="btn">
+                      <RiCloseLine size="20" />
+                    </button>
+                  </div>
+                  {errors.columns?.[index]?.title?.message && (
+                    <ValidationError
+                      errorMessage={errors.columns[index]?.title?.message || ""}
+                    />
+                  )}
+                </div>
+              );
+            })}
 
             <div className="mt-3 space-y-3">
               <button
                 type="button"
-                onClick={handleAddColumn}
+                onClick={() => append({ title: "" })}
                 className="btn btn-block btn-outline"
               >
                 Add New Column
