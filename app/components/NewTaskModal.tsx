@@ -9,7 +9,8 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import ValidationError from "./ValidationError";
 import BoardOption from "./BoardOption";
-import { RiCloseLine } from "react-icons/ri";
+import { RiCloseLine, RiAddLine } from "react-icons/ri";
+import { HiPlus } from "react-icons/hi";
 
 type TaskForm = z.infer<typeof createTaskSchema>;
 
@@ -70,7 +71,7 @@ const NewTaskModal = ({ onEdit }: { onEdit: () => void }) => {
 
   return (
     <div>
-      <div className="flex items-center gap-3">
+      <div className="flex items-center gap-2">
         <button
           onClick={() => newTaskModal.current?.showModal()}
           disabled={
@@ -79,9 +80,12 @@ const NewTaskModal = ({ onEdit }: { onEdit: () => void }) => {
               ? true
               : false
           }
-          className="btn btn-primary"
+          className="btn btn-primary btn-sm md:btn-md"
         >
-          Add Task
+          <span className="hidden md:block">+Add Task</span>
+          <span className="md:hidden">
+            <RiAddLine size="20" />
+          </span>
         </button>
         <BoardOption onEdit={onEdit} />
       </div>
