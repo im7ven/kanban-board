@@ -4,7 +4,7 @@ import { useRef, useState } from "react";
 import Sidebar from "./Sidebar";
 import TaskBoard from "./TaskBoard";
 import MenuBar from "./MenuBar";
-import EditTaskModal from "./EditTaskModal";
+import EditTaskBoardModal from "./EditTaskBoardModal";
 
 const UserContent = () => {
   const [showSideBar, setShowSideBar] = useState(true);
@@ -23,7 +23,7 @@ const UserContent = () => {
     <div className="flex ">
       <Sidebar sidebar={showSideBar} onShowSideBar={handleShowSideBar} />
       <div className={`flex-1 ${showSideBar ? "" : "col-span-2"}`}>
-        <EditTaskModal editModalRef={editModalRef} />
+        <EditTaskBoardModal editModalRef={editModalRef} />
         <MenuBar onEdit={handleOpenEditModal} />
         <TaskBoard
           onEdit={handleOpenEditModal}

@@ -20,7 +20,7 @@ interface Column {
 
 type EditTaskBoardForm = z.infer<typeof updateTaskBoardSchema>;
 
-const EditTaskModal: React.FC<Props> = ({ editModalRef }) => {
+const EditTaskBoardModal: React.FC<Props> = ({ editModalRef }) => {
   const { activeBoard } = useActiveTaskBoard();
   const [existingColumns, setExistingColumns] = useState<Column[]>([]);
   const queryClient = useQueryClient();
@@ -148,4 +148,4 @@ const EditTaskModal: React.FC<Props> = ({ editModalRef }) => {
   );
 };
 
-export default EditTaskModal;
+export default EditTaskBoardModal;
