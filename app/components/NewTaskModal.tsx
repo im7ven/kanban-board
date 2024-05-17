@@ -1,5 +1,5 @@
-import React, { useRef, useState } from "react";
-import { useForm } from "react-hook-form";
+import React, { useEffect, useRef } from "react";
+import { useFieldArray, useForm } from "react-hook-form";
 import useActiveTaskBoard from "../zustand/store";
 import useTaskBoards from "../hooks/useTaskBoards";
 import { createTaskSchema } from "../validationSchemas";
@@ -9,6 +9,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import ValidationError from "./ValidationError";
 import BoardOption from "./BoardOption";
+import { RiCloseLine } from "react-icons/ri";
 
 type TaskForm = z.infer<typeof createTaskSchema>;
 
@@ -17,29 +18,36 @@ const NewTaskModal = ({ onEdit }: { onEdit: () => void }) => {
   const { activeBoard } = useActiveTaskBoard();
   const { taskBoards } = useTaskBoards();
   const queryClient = useQueryClient();
-  const [subTasks, setSubTasks] = useState<number[]>([]);
   const {
     register,
     handleSubmit,
     reset,
     clearErrors,
+    control,
     formState: { errors },
   } = useForm<TaskForm>({
     resolver: zodResolver(createTaskSchema),
+    defaultValues: {
+      columnId: activeBoard?.columns?.[0]?.id?.toString(),
+    },
   });
+
+  const { fields, append, remove } = useFieldArray({
+    name: "subtasks",
+    control,
+  });
+
+  useEffect(() => {
+    reset({
+      columnId: activeBoard?.columns?.[0]?.id.toString(),
+    });
+  }, [activeBoard, reset]);
 
   const { mutate: createTask } = useMutation<void, unknown, TaskForm>(
     async (newTaskData: TaskForm) => {
       await axios.post("/api/tasks", newTaskData);
     }
   );
-
-  const handleAddSubTask = () => {
-    const uniqueNumber = Math.floor(Math.random() * Number.MAX_SAFE_INTEGER);
-    setSubTasks((prevColumns) => [...prevColumns, uniqueNumber]);
-  };
-
-  const currentBoard = taskBoards?.find((board) => board === activeBoard);
 
   const onSubmit = (data: TaskForm) => {
     console.log(data);
@@ -49,7 +57,6 @@ const NewTaskModal = ({ onEdit }: { onEdit: () => void }) => {
           queryKey: ["taskBoards"],
         });
         reset();
-        setSubTasks([]);
         newTaskModal.current?.close();
       },
     });
@@ -59,7 +66,6 @@ const NewTaskModal = ({ onEdit }: { onEdit: () => void }) => {
     newTaskModal.current?.close();
     clearErrors("title");
     reset();
-    setSubTasks([]);
   };
 
   return (
@@ -112,30 +118,45 @@ const NewTaskModal = ({ onEdit }: { onEdit: () => void }) => {
               )}
             </label>
 
-            {subTasks.length > 0 && <h3 className="mt-3">Subtasks</h3>}
-            {subTasks.map((task, index) => (
-              <div key={task} className="my-2">
-                <label className=" flex-1 input input-bordered flex items-center gap-2">
-                  Subtask
-                  <input
-                    type="text"
-                    className="grow"
-                    {...register(`subtasks.${index}`, {
-                      required: false,
-                    })}
-                  />
-                </label>
-                {errors.subtasks?.[index]?.message && (
-                  <ValidationError
-                    errorMessage={errors.subtasks[index]?.message || ""}
-                  />
-                )}
-              </div>
-            ))}
+            {fields.map((field, index) => {
+              return (
+                <div key={field.id}>
+                  <div className="flex items-end gap-3">
+                    <label className="form-control w-full">
+                      <div className="label">
+                        <span className="label-text">Column</span>
+                      </div>
+                      <input
+                        {...register(`subtasks.${index}.title` as const)}
+                        type="text"
+                        placeholder="e.g. Refactor"
+                        className="input input-bordered w-full "
+                      />
+                    </label>
+
+                    <button onClick={() => remove(index)} className="btn">
+                      <RiCloseLine size="20" />
+                    </button>
+                  </div>
+                  {errors.subtasks?.[index]?.title?.message && (
+                    <ValidationError
+                      errorMessage={
+                        errors.subtasks[index]?.title?.message || ""
+                      }
+                    />
+                  )}
+                </div>
+              );
+            })}
+
             <button
               type="button"
-              className="btn btn-outline w-full mb-3"
-              onClick={handleAddSubTask}
+              className="btn btn-outline w-full my-3"
+              onClick={() =>
+                append({
+                  title: "",
+                })
+              }
             >
               Add Subtask
             </button>
@@ -147,9 +168,8 @@ const NewTaskModal = ({ onEdit }: { onEdit: () => void }) => {
               <select
                 {...register("columnId")}
                 className="select select-bordered"
-                defaultValue={activeBoard?.columns?.[0]?.id?.toString()}
               >
-                {currentBoard?.columns.map((col) => (
+                {activeBoard?.columns.map((col) => (
                   <option value={col.id} key={col.id}>
                     {col.title}
                   </option>

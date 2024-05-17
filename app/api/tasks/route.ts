@@ -18,8 +18,8 @@ export async function POST(request: NextRequest) {
       columnId: parseInt(body.columnId),
       subtasks: {
         create:
-          validation.data.subtasks?.map((task: string) => ({
-            description: task,
+          validation.data.subtasks?.map((task: { title: string }) => ({
+            description: task.title,
             status: false,
           })) || [],
       },
