@@ -23,6 +23,7 @@ export async function GET(request: NextRequest) {
           tasks: {
             include: {
               subtasks: true,
+              column: true,
             },
           },
         },

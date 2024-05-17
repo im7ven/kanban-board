@@ -15,4 +15,5 @@ export interface Column extends PrismaColumn {
 
 export interface Task extends PrismaTask {
   subtasks: Subtask[];
+  column: Column;
 }
