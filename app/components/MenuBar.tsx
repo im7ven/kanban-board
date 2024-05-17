@@ -69,7 +69,7 @@ const AuthStatus = () => {
   }
 
   return (
-    <div className="h-10">
+    <div>
       <div className="dropdown dropdown-bottom dropdown-end">
         <div tabIndex={0} role="button">
           <div className="avatar">
