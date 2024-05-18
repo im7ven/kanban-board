@@ -82,7 +82,7 @@ const TaskComponent = ({ task }: { task: Task }) => {
                   <label className="label cursor-pointer">
                     <input
                       type="checkbox"
-                      className="checkbox checkbox-sm checkbox-primary"
+                      className="checkbox checkbox-sm checkbox-primary rounded-none"
                       checked={sub.status}
                       onChange={() => handleSubtaskStatusChange(sub.id)}
                     />
