@@ -3,6 +3,7 @@ import { CgBoard } from "react-icons/cg";
 import NewTaskBoardModal from "./NewTaskBoardModal";
 import useTaskBoards from "../hooks/useTaskBoards";
 import useActiveTaskBoard from "../zustand/store";
+import ThemeToggle from "./ThemeToggle";
 
 const TaskBoardMenu = ({ onShowSideBar }: { onShowSideBar?: () => void }) => {
   const { isError, isLoading, taskBoards, authenticated } = useTaskBoards();
@@ -47,7 +48,11 @@ const TaskBoardMenu = ({ onShowSideBar }: { onShowSideBar?: () => void }) => {
         </ul>
         <NewTaskBoardModal />
       </div>
-      <div className="text-center">Theme Switch</div>
+
+      <div className="text-center">
+        <ThemeToggle />
+      </div>
+
       <button
         onClick={onShowSideBar}
         className="items-align hidden md:flex btn ml-3"
