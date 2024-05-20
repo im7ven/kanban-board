@@ -21,13 +21,13 @@ const config: Config = {
       {
         dark: {
           ...require("daisyui/src/theming/themes")["dark"],
-          custom: "#1C2127",
+          secondary: "#1C2127",
         },
       },
       {
         myTheme: {
           primary: "#6246ea",
-          secondary: "#004643",
+          secondary: "#F8FAFF",
           accent: "#1DC4A6",
           custom: "#F8FAFF",
           "base-100": "#fff",
