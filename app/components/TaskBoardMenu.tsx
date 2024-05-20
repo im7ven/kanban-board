@@ -49,7 +49,7 @@ const TaskBoardMenu = ({ onShowSideBar }: { onShowSideBar?: () => void }) => {
         <NewTaskBoardModal />
       </div>
 
-      <div className="text-center">
+      <div className="flex justify-center mb-2">
         <ThemeToggle />
       </div>
 
