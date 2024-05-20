@@ -6,6 +6,7 @@ import { RiArrowDropDownLine } from "react-icons/ri";
 import TaskBoardMenu from "./TaskBoardMenu";
 import NewTaskModal from "./NewTaskModal";
 import useActiveTaskBoard from "../zustand/store";
+import ThemeText from "./ThemeText";
 
 type Status = "authenticated" | "loading" | "unauthenticated";
 
@@ -20,8 +21,10 @@ const MenuBar = ({ onEdit }: { onEdit: () => void }) => {
         ) : (
           <>
             <MenuDropDown />
-            <h2 className="md:text-xl font-bold text-white">
-              {activeBoard ? activeBoard.title : "No Active Board"}
+            <h2 className="md:text-xl font-bold">
+              <ThemeText>
+                {activeBoard ? activeBoard.title : "No Active Board"}
+              </ThemeText>
             </h2>
           </>
         )}

@@ -11,6 +11,7 @@ import ValidationError from "./ValidationError";
 import BoardOption from "./BoardOption";
 import { RiCloseLine, RiAddLine } from "react-icons/ri";
 import { HiPlus } from "react-icons/hi";
+import ThemeText from "./ThemeText";
 
 type TaskForm = z.infer<typeof createTaskSchema>;
 
@@ -92,7 +93,9 @@ const NewTaskModal = ({ onEdit }: { onEdit: () => void }) => {
       <dialog ref={newTaskModal} id="newTaskModal" className="modal">
         <div className="modal-box">
           <form onSubmit={handleSubmit(onSubmit)}>
-            <h2 className="text-white font-bold mb-3">Add New Task</h2>
+            <h2 className="font-bold mb-3">
+              <ThemeText>Add New Task</ThemeText>
+            </h2>
 
             <label className="form-control w-full mb-3">
               <div className="label">

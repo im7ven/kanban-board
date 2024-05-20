@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { AiOutlineEye } from "react-icons/ai";
 import TaskBoardMenu from "./TaskBoardMenu";
 import Image from "next/image";
+import ThemeText from "./ThemeText";
 
 interface Props {
   sidebar: boolean;
@@ -39,7 +40,7 @@ const Sidebar = ({ sidebar, onShowSideBar }: Props) => {
                 alt="logo"
               />
               <h1 className=" font-bold text-white text-2xl self-center">
-                KANBAN
+                <ThemeText>KANBAN</ThemeText>
               </h1>
             </div>
             <TaskBoardMenu onShowSideBar={onShowSideBar} />

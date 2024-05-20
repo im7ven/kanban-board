@@ -6,6 +6,8 @@ import { SlOptionsVertical } from "react-icons/sl";
 import { link } from "fs";
 import { updateSubtaskStatus, updateTaskStatus } from "../serverActions";
 import { useQueryClient } from "@tanstack/react-query";
+import useTheme from "../zustand/themeStore";
+import ThemeText from "./ThemeText";
 
 interface TaskBoardProps {
   isSideBarVisible: boolean;
@@ -28,6 +30,7 @@ const TaskComponent = ({ task }: { task: Task }) => {
   const editTaskModal = useRef<HTMLDialogElement>(null);
   const queryClient = useQueryClient();
   const { activeBoard } = useActiveTaskBoard();
+  const { activeTheme } = useTheme();
 
   const handleSubtaskStatusChange = async (subtaskId: number) => {
     const subtaskIndex = localTask.subtasks.findIndex(
@@ -59,7 +62,9 @@ const TaskComponent = ({ task }: { task: Task }) => {
       <dialog ref={editTaskModal} id="editTaskModal" className="modal">
         <div className="modal-box">
           <div className="flex justify-between">
-            <h3 className="font-bold text-lg text-white">{localTask.title}</h3>
+            <h2 className="font-bold ">
+              <ThemeText>{localTask.title}</ThemeText>
+            </h2>
             <button>
               <SlOptionsVertical />
             </button>
@@ -118,9 +123,13 @@ const TaskComponent = ({ task }: { task: Task }) => {
 
       <div
         onClick={() => editTaskModal.current?.showModal()}
-        className="space-y-5 bg-neutral rounded-lg p-4 shadow-xl"
+        className={`space-y-5 rounded-lg p-4 shadow-xl ${
+          activeTheme === "myTheme" ? "bg-white" : "bg-neutral"
+        }`}
       >
-        <h3 className="text-white font-bold text-md">{localTask.title}</h3>
+        <h3 className="font-bold text-md">
+          <ThemeText>{localTask.title}</ThemeText>
+        </h3>
         <p className="text-sm">{`${
           localTask.subtasks.filter((sub) => sub.status).length
         }/${localTask.subtasks.length} Subtasks Completed`}</p>
@@ -135,7 +144,7 @@ const TaskBoard = ({ isSideBarVisible, onEdit }: TaskBoardProps) => {
 
   return (
     <div
-      className={`bg-base-300 gap-6 flex p-4 overflow-x-auto overflow-y-auto boardContainerHeight ${
+      className={`bg-secondary gap-6 flex p-4 overflow-x-auto overflow-y-auto boardContainerHeight ${
         isSideBarVisible ? "boardContainerWidth" : "w-[100vw] pl-[5rem]"
       } ${
         (taskBoards && taskBoards.length < 1) ||
@@ -154,7 +163,9 @@ const TaskBoard = ({ isSideBarVisible, onEdit }: TaskBoardProps) => {
             className="text-white text-lg text-center
           "
           >
-            This board is empty. Create a new column to get started.
+            <ThemeText>
+              This board is empty. Create a new column to get started.
+            </ThemeText>
           </p>
           <button
             onClick={() => onEdit()}

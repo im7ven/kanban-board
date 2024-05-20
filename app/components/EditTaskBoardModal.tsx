@@ -8,6 +8,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { RiCloseLine } from "react-icons/ri";
 import ValidationError from "./ValidationError";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import ThemeText from "./ThemeText";
 
 interface Props {
   editModalRef: React.RefObject<HTMLDialogElement>;
@@ -77,7 +78,9 @@ const EditTaskBoardModal: React.FC<Props> = ({ editModalRef }) => {
     <div>
       <dialog ref={editModalRef} id="my_modal_2" className="modal">
         <div className="modal-box">
-          <h3 className="font-bold text-lg text-white">{`Editing - "${activeBoard?.title}"`}</h3>
+          <h2 className="font-bold">
+            <ThemeText>{`Editing - "${activeBoard?.title}"`}</ThemeText>
+          </h2>
           <form onSubmit={handleSubmit(onSubmit)}>
             <label className="form-control w-full">
               <div className="label">

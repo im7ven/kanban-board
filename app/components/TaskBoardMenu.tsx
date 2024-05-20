@@ -34,7 +34,7 @@ const TaskBoardMenu = ({ onShowSideBar }: { onShowSideBar?: () => void }) => {
               <li
                 className={`rounded-r-full py-3 cursor-pointer ${
                   board === activeBoard ? "bg-primary text-white" : ""
-                }${board === activeBoard ? "" : " hover:bg-neutral"}`}
+                }${board === activeBoard ? "" : " hover:bg-base-200"}`}
                 key={board.id}
                 onClick={() => setIsActive(board)}
               >

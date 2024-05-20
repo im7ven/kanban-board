@@ -5,7 +5,7 @@ const ThemeToggle: React.FC = () => {
   const { setTheme, activeTheme } = useTheme();
 
   const toggleTheme = () => {
-    setTheme(activeTheme === "light" ? "dark" : "light");
+    setTheme(activeTheme === "myTheme" ? "dark" : "myTheme");
   };
 
   useEffect(() => {
