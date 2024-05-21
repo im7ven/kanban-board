@@ -73,7 +73,6 @@ const EditTaskBoardModal: React.FC<Props> = ({ editModalRef }) => {
     mutation.mutate(data);
   };
 
-  console.log(activeBoard?.columns);
   return (
     <div>
       <dialog ref={editModalRef} id="my_modal_2" className="modal">
