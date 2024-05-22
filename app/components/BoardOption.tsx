@@ -4,10 +4,12 @@ import React, { useRef } from "react";
 import { SlOptionsVertical } from "react-icons/sl";
 import useActiveTaskBoard from "../zustand/store";
 import useTaskBoards from "../hooks/useTaskBoards";
+import useTheme from "../zustand/themeStore";
 
 const BoardOption = ({ onEdit }: { onEdit: () => void }) => {
   const deleteBoardModal = useRef<HTMLDialogElement>(null);
   const { activeBoard } = useActiveTaskBoard();
+  const { activeTheme } = useTheme();
 
   return (
     <div className="dropdown">
@@ -21,17 +23,19 @@ const BoardOption = ({ onEdit }: { onEdit: () => void }) => {
       </button>
       <ul
         tabIndex={0}
-        className="dropdown-content z-[1] menu p-2 shadow bg-base-300 rounded-box w-52 space-y-3"
+        className={`dropdown-content z-[1] menu p-2 shadow  rounded-box w-52 ${
+          activeTheme === "myTheme" ? "bg-white" : "bg-neutral"
+        }`}
       >
         <li
           onClick={() => onEdit()}
-          className="hover:bg-base-100 p-2 rounded-lg cursor-pointer"
+          className="hover:font-bold p-2 rounded-lg cursor-pointer"
         >
           Edit Board
         </li>
         <li
           onClick={() => deleteBoardModal.current?.showModal()}
-          className="text-red-500 hover:bg-base-100 p-2 rounded-lg cursor-pointer"
+          className="text-red-500 hover:font-bold p-2 rounded-lg cursor-pointer"
         >
           Delete
         </li>

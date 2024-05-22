@@ -7,6 +7,7 @@ import TaskBoardMenu from "./TaskBoardMenu";
 import NewTaskModal from "./NewTaskModal";
 import useActiveTaskBoard from "../zustand/store";
 import ThemeText from "./ThemeText";
+import useTheme from "../zustand/themeStore";
 
 type Status = "authenticated" | "loading" | "unauthenticated";
 
@@ -58,6 +59,7 @@ const MenuDropDown = () => {
 
 const AuthStatus = () => {
   const { status, data: session } = useSession();
+  const { activeTheme } = useTheme();
 
   if (status === "loading") {
     return <div className=" rounded-full skeleton w-[40px] h-10"></div>;
@@ -83,11 +85,19 @@ const AuthStatus = () => {
         </div>
         <ul
           tabIndex={0}
-          className="dropdown-content z-[1] menu p-2 shadow bg-base-300 rounded-box w-52"
+          className={`dropdown-content z-[1] menu p-2 shadow  rounded-box w-72 ${
+            activeTheme === "myTheme" ? "bg-white" : "bg-neutral"
+          }`}
         >
+          <li className="px-1 font-semibold">{session?.user?.name}</li>
           <li className="p-1">{session?.user?.email}</li>
-          <li className="bg-secondary text-white rounded-lg">
-            <Link href="/api/auth/signout">Logout</Link>
+          <li className="bg-accent text-white rounded-lg">
+            <Link
+              href="/api/auth/signout"
+              className="block w-full text-center py-2"
+            >
+              Logout
+            </Link>
           </li>
         </ul>
       </div>
