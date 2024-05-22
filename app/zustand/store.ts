@@ -5,7 +5,6 @@ interface ActiveTaskBoardStore {
   activeBoard: TaskBoard | null;
   setDefaultBoard: (taskBoards: TaskBoard[] | null) => void;
   setActiveBoard: (board: TaskBoard | null) => void;
-  setNewActiveBoard: (board: TaskBoard | null) => void;
 }
 
 const useActiveTaskBoard = create<ActiveTaskBoardStore>((set) => ({
@@ -19,11 +18,6 @@ const useActiveTaskBoard = create<ActiveTaskBoardStore>((set) => ({
   },
   setActiveBoard: (board: TaskBoard | null) => {
     set({ activeBoard: board });
-  },
-  setNewActiveBoard: (board: TaskBoard | null) => {
-    if (board) {
-      set({ activeBoard: board });
-    }
   },
 }));
 
