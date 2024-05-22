@@ -3,6 +3,7 @@ import axios from "axios";
 import React, { useRef } from "react";
 import { SlOptionsVertical } from "react-icons/sl";
 import useActiveTaskBoard from "../zustand/store";
+import useTaskBoards from "../hooks/useTaskBoards";
 
 const BoardOption = ({ onEdit }: { onEdit: () => void }) => {
   const deleteBoardModal = useRef<HTMLDialogElement>(null);
@@ -45,7 +46,8 @@ const DeleteBoardModal = ({
 }: {
   deleteBoardModal: React.RefObject<HTMLDialogElement>;
 }) => {
-  const { activeBoard } = useActiveTaskBoard();
+  const { activeBoard, setDefaultBoard } = useActiveTaskBoard();
+  const { taskBoards } = useTaskBoards();
   const queryClient = useQueryClient();
   const { mutate: deleteBoard } = useMutation(
     async () => {
@@ -59,11 +61,10 @@ const DeleteBoardModal = ({
           queryKey: ["taskBoards"],
         });
         deleteBoardModal.current?.close();
+        if (taskBoards) setDefaultBoard(taskBoards);
       },
     }
   );
-
-  const boardName = activeBoard?.title;
 
   const onCancel = () => {
     deleteBoardModal.current?.close();
@@ -73,7 +74,7 @@ const DeleteBoardModal = ({
     <dialog ref={deleteBoardModal} id="deleteBoardModal" className="modal">
       <div className="modal-box">
         <h3 className="font-bold text-lg text-white">Delete this board?</h3>
-        <p className="py-4">{`Are you sure you want to delete the "${boardName}"? This action will delete any columns, tasks, and subtasks created within this board and cannot be reversed.`}</p>
+        <p className="py-4">{`Are you sure you want to delete the "${activeBoard?.title}"? This action will delete any columns, tasks, and subtasks created within this board and cannot be reversed.`}</p>
         <div className="flex gap-3">
           <button className="btn grow" onClick={onCancel}>
             Cancel

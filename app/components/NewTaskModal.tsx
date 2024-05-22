@@ -10,16 +10,16 @@ import axios from "axios";
 import ValidationError from "./ValidationError";
 import BoardOption from "./BoardOption";
 import { RiCloseLine, RiAddLine } from "react-icons/ri";
-import { HiPlus } from "react-icons/hi";
 import ThemeText from "./ThemeText";
 
 type TaskForm = z.infer<typeof createTaskSchema>;
 
 const NewTaskModal = ({ onEdit }: { onEdit: () => void }) => {
   const newTaskModal = useRef<HTMLDialogElement>(null);
-  const { activeBoard } = useActiveTaskBoard();
+  const { activeBoard, setActiveBoard } = useActiveTaskBoard();
   const { taskBoards } = useTaskBoards();
   const queryClient = useQueryClient();
+
   const {
     register,
     handleSubmit,
@@ -48,12 +48,8 @@ const NewTaskModal = ({ onEdit }: { onEdit: () => void }) => {
   const { mutate: createTask } = useMutation<void, unknown, TaskForm>(
     async (newTaskData: TaskForm) => {
       await axios.post("/api/tasks", newTaskData);
-    }
-  );
-
-  const onSubmit = (data: TaskForm) => {
-    console.log(data);
-    createTask(data, {
+    },
+    {
       onSuccess: () => {
         queryClient.invalidateQueries({
           queryKey: ["taskBoards"],
@@ -61,7 +57,11 @@ const NewTaskModal = ({ onEdit }: { onEdit: () => void }) => {
         reset();
         newTaskModal.current?.close();
       },
-    });
+    }
+  );
+
+  const onSubmit = (data: TaskForm) => {
+    createTask(data);
   };
 
   const handleCancel = () => {

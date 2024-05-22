@@ -7,7 +7,7 @@ import ThemeToggle from "./ThemeToggle";
 
 const TaskBoardMenu = ({ onShowSideBar }: { onShowSideBar?: () => void }) => {
   const { isError, isLoading, taskBoards, authenticated } = useTaskBoards();
-  const { setIsActive, activeBoard } = useActiveTaskBoard();
+  const { setActiveBoard, activeBoard } = useActiveTaskBoard();
   if (authenticated === null) {
     return <div className="ml-3 loading loading-spinner text-secondary"></div>;
   }
@@ -15,6 +15,8 @@ const TaskBoardMenu = ({ onShowSideBar }: { onShowSideBar?: () => void }) => {
   if (authenticated === false) {
     return <p>Please sign in to view taskBoards</p>;
   }
+
+  console.log("Active:", activeBoard);
 
   return (
     <div className="flex flex-col md:flex-1 md:mt-7">
@@ -36,7 +38,7 @@ const TaskBoardMenu = ({ onShowSideBar }: { onShowSideBar?: () => void }) => {
                   board === activeBoard ? "bg-primary text-white" : ""
                 }${board === activeBoard ? "" : " hover:bg-base-200"}`}
                 key={board.id}
-                onClick={() => setIsActive(board)}
+                onClick={() => setActiveBoard(board)}
               >
                 <button className="flex items-center ml-3 gap-1">
                   <CgBoard size="20" />

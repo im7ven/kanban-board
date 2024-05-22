@@ -7,8 +7,9 @@ import { TaskBoard } from "../types";
 
 const useTaskBoards = () => {
   const { status } = useSession();
-  const { defaultBoard } = useActiveTaskBoard();
+  const { setDefaultBoard, setActiveBoard, activeBoard } = useActiveTaskBoard();
   const [authenticated, setAuthenticated] = useState<boolean | null>(null);
+
   useEffect(() => {
     if (status === "authenticated") {
       setAuthenticated(true);
@@ -33,17 +34,17 @@ const useTaskBoards = () => {
     staleTime: 60 * 1000,
     retry: 3,
     enabled: authenticated === true,
+    onSuccess: (data) => {
+      if (!activeBoard) {
+        setDefaultBoard(data);
+      } else {
+        const updatedBoard = data.find((board) => board.id === activeBoard.id);
+        setActiveBoard(updatedBoard || null);
+      }
+    },
   });
 
   const { isLoading, data: taskBoards, isError } = taskBoardQueries;
-
-  useEffect(() => {
-    if (!isLoading && taskBoards && taskBoards.length > 0) {
-      defaultBoard(taskBoards);
-    } else {
-      defaultBoard(null);
-    }
-  }, [isLoading, taskBoards, defaultBoard]);
 
   return { isLoading, isError, taskBoards, authenticated };
 };
