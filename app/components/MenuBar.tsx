@@ -42,6 +42,7 @@ const MenuBar = ({ onEdit }: { onEdit: () => void }) => {
 };
 
 const MenuDropDown = () => {
+  const { activeTheme } = useTheme();
   return (
     <div className=" md:hidden dropdown dropdown-bottom">
       <div tabIndex={0} role="button">
@@ -49,7 +50,9 @@ const MenuDropDown = () => {
       </div>
       <div
         tabIndex={0}
-        className="dropdown-content z-[1] w-[18rem] p-2 shadow bg-neutral rounded-lg"
+        className={`dropdown-content z-[1] w-[18rem] p-2 shadow rounded-lg  ${
+          activeTheme === "myTheme" ? "bg-white" : "bg-neutral"
+        }`}
       >
         <TaskBoardMenu />
       </div>

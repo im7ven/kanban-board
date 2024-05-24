@@ -13,7 +13,7 @@ const ThemeToggle: React.FC = () => {
   }, [activeTheme]);
 
   return (
-    <label className="flex cursor-pointer gap-2 items-center">
+    <label className="flex cursor-pointer gap-2 items-center mt-3">
       <svg
         xmlns="http://www.w3.org/2000/svg"
         width="20"

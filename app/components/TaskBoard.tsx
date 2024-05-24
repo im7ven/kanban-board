@@ -154,7 +154,9 @@ const TaskBoard = ({ isSideBarVisible, onEdit }: TaskBoardProps) => {
     >
       {taskBoards && taskBoards.length < 1 ? (
         <p className="text-white text-lg text-center">
-          You Currently have no boards. Create a new board to get started.
+          <ThemeText>
+            You Currently have no boards. Create a new board to get started.
+          </ThemeText>
         </p>
       ) : activeBoard && activeBoard?.columns.length < 1 ? (
         <div className="flex flex-col justify-center gap-3">
