@@ -50,7 +50,7 @@ const DeleteBoardModal = ({
 }: {
   deleteBoardModal: React.RefObject<HTMLDialogElement>;
 }) => {
-  const { activeBoard, setDefaultBoard } = useActiveTaskBoard();
+  const { activeBoard, setDefaultBoard, setActiveBoard } = useActiveTaskBoard();
   const { taskBoards } = useTaskBoards();
   const queryClient = useQueryClient();
   const { mutate: deleteBoard } = useMutation(
@@ -65,7 +65,18 @@ const DeleteBoardModal = ({
           queryKey: ["taskBoards"],
         });
         deleteBoardModal.current?.close();
-        if (taskBoards) setDefaultBoard(taskBoards);
+
+        // Filter out the deleted board
+        const remainingBoards = taskBoards?.filter(
+          (board) => board.id !== activeBoard?.id
+        );
+
+        // Set the new default board if there are remaining boards
+        if (remainingBoards && remainingBoards.length > 0) {
+          setDefaultBoard(remainingBoards);
+        } else {
+          setActiveBoard(null);
+        }
       },
     }
   );
