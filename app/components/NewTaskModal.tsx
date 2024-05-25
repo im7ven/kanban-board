@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
 import useActiveTaskBoard from "../zustand/store";
 import useTaskBoards from "../hooks/useTaskBoards";
-import { createTaskSchema } from "../validationSchemas";
+import { taskSchema } from "../validationSchemas";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -11,14 +11,16 @@ import ValidationError from "./ValidationError";
 import BoardOption from "./BoardOption";
 import { RiCloseLine, RiAddLine } from "react-icons/ri";
 import ThemeText from "./ThemeText";
+import { useSession } from "next-auth/react";
 
-type TaskForm = z.infer<typeof createTaskSchema>;
+type TaskForm = z.infer<typeof taskSchema>;
 
 const NewTaskModal = ({ onEdit }: { onEdit: () => void }) => {
   const newTaskModal = useRef<HTMLDialogElement>(null);
   const { activeBoard, setActiveBoard } = useActiveTaskBoard();
   const { taskBoards } = useTaskBoards();
   const queryClient = useQueryClient();
+  const { status } = useSession();
 
   const {
     register,
@@ -28,7 +30,7 @@ const NewTaskModal = ({ onEdit }: { onEdit: () => void }) => {
     control,
     formState: { errors },
   } = useForm<TaskForm>({
-    resolver: zodResolver(createTaskSchema),
+    resolver: zodResolver(taskSchema),
     defaultValues: {
       columnId: activeBoard?.columns?.[0]?.id?.toString(),
     },
@@ -77,6 +79,7 @@ const NewTaskModal = ({ onEdit }: { onEdit: () => void }) => {
           onClick={() => newTaskModal.current?.showModal()}
           disabled={
             (taskBoards && taskBoards.length < 1) ||
+            status === "unauthenticated" ||
             (activeBoard !== null && activeBoard.columns.length < 1)
               ? true
               : false

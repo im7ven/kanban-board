@@ -17,7 +17,7 @@ export const createTaskBoardSchema = z.object({
     .optional(),
 });
 
-export const createTaskSchema = z.object({
+export const taskSchema = z.object({
   title: z
     .string()
     .min(1, "Title is required.")
