@@ -7,6 +7,7 @@ import {
 
 export interface TaskBoard extends PrismaTaskBoard {
   columns: Column[];
+  tasks: Task[];
 }
 
 export interface Column extends PrismaColumn {
