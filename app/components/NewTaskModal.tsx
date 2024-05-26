@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
 import useActiveTaskBoard from "../zustand/store";
 import useTaskBoards from "../hooks/useTaskBoards";
-import { taskSchema } from "../validationSchemas";
+import { createTaskSchema } from "../validationSchemas";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -13,7 +13,7 @@ import { RiCloseLine, RiAddLine } from "react-icons/ri";
 import ThemeText from "./ThemeText";
 import { useSession } from "next-auth/react";
 
-type TaskForm = z.infer<typeof taskSchema>;
+type TaskForm = z.infer<typeof createTaskSchema>;
 
 const NewTaskModal = ({ onEdit }: { onEdit: () => void }) => {
   const newTaskModal = useRef<HTMLDialogElement>(null);
@@ -30,7 +30,7 @@ const NewTaskModal = ({ onEdit }: { onEdit: () => void }) => {
     control,
     formState: { errors },
   } = useForm<TaskForm>({
-    resolver: zodResolver(taskSchema),
+    resolver: zodResolver(createTaskSchema),
     defaultValues: {
       columnId: activeBoard?.columns?.[0]?.id?.toString(),
     },
