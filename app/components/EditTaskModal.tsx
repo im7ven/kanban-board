@@ -73,12 +73,11 @@ const EditTaskModal = ({ onOpen, task }: Props) => {
 
   return (
     <div>
-      <div className="dropdown dropdown-end">
-        <div tabIndex={0} role="button" className="m-1">
+      <details className="dropdown dropdown-end">
+        <summary className="btn m-1 outline-none btn-ghost">
           <SlOptionsVertical />
-        </div>
+        </summary>
         <ul
-          tabIndex={0}
           className={`dropdown-content z-[1] menu p-2 shadow rounded w-52 text-left ${
             activeTheme === "myTheme" ? "bg-white" : "bg-neutral"
           }`}
@@ -93,7 +92,7 @@ const EditTaskModal = ({ onOpen, task }: Props) => {
             Delete Task
           </li>
         </ul>
-      </div>
+      </details>
 
       <dialog ref={editModalRef} id="editModalRef" className="modal">
         <div className="modal-box">
