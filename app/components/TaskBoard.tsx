@@ -177,14 +177,14 @@ const TaskBoard = ({ isSideBarVisible, onEdit }: TaskBoardProps) => {
           {activeBoard?.columns.map((col) => (
             <ColumnComponent key={col.id} column={col} />
           ))}
-          <h3
+          <div
             onClick={() => onEdit()}
             className={`rounded w-[17.5rem] flex items-center justify-center font-bold text-xl text-[#828FA3] ${
               activeTheme === "myTheme" ? "bg-[#EEF2FE]" : "bg-base-200"
             }`}
           >
-            +New Column
-          </h3>
+            <h3>+New Column</h3>
+          </div>
         </>
       )}
     </div>
