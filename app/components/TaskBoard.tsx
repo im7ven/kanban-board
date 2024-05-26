@@ -17,7 +17,7 @@ interface TaskBoardProps {
 const ColumnComponent = ({ column }: { column: Column }) => {
   return (
     <div className="min-w-[17.5rem] space-y-5">
-      <h2 className="tracking-widest uppercase">{column.title}</h2>
+      <h2 className="tracking-widest uppercase">{`${column.title} (${column.tasks.length})`}</h2>
       {column.tasks.map((task) => (
         <TaskComponent key={task.id} task={task} />
       ))}
@@ -58,7 +58,7 @@ const TaskComponent = ({ task }: { task: Task }) => {
     <>
       <dialog ref={editTaskModal} id="editTaskModal" className="modal">
         <div className="modal-box">
-          <div className="flex justify-between">
+          <div className="flex justify-between items-center">
             <h2 className="font-bold ">
               <ThemeText>{task.title}</ThemeText>
             </h2>
@@ -66,23 +66,24 @@ const TaskComponent = ({ task }: { task: Task }) => {
           </div>
           <p className="py-4">{task.description}</p>
           <p className="my-3 text-sm">
-            {`Subtasks (${task.subtasks.filter((sub) => sub.status).length} / ${
-              task.subtasks.length
-            })`}
+            {task.subtasks.length > 0 &&
+              `Subtasks (${
+                task.subtasks.filter((sub) => sub.status).length
+              } / ${task.subtasks.length})`}
           </p>
           <ul className="space-y-2">
             {task.subtasks.map((sub) => (
               <li
-                className={`p-2 bg-base-200 rounded-md ${
+                className={`p-2 bg-secondary rounded-md ${
                   sub.status === true ? "line-through" : ""
                 }`}
                 key={sub.id}
               >
-                <div className="form-control flex items-start space-x-4">
+                <div className="form-control flex items-start space-x-4 ">
                   <label className="label cursor-pointer">
                     <input
                       type="checkbox"
-                      className="checkbox checkbox-sm checkbox-primary rounded-none"
+                      className="checkbox checkbox-xs checkbox-primary rounded-sm"
                       checked={sub.status}
                       onChange={() => handleSubtaskStatusChange(sub.id)}
                     />
@@ -124,9 +125,13 @@ const TaskComponent = ({ task }: { task: Task }) => {
         <h3 className="font-bold text-md">
           <ThemeText>{task.title}</ThemeText>
         </h3>
-        <p className="text-sm">{`${
-          task.subtasks.filter((sub) => sub.status).length
-        }/${task.subtasks.length} Subtasks Completed`}</p>
+        <p className="text-sm">
+          {task.subtasks.length < 1
+            ? "0 Subtasks"
+            : `${task.subtasks.filter((sub) => sub.status).length}/${
+                task.subtasks.length
+              } Subtasks Completed`}
+        </p>
       </div>
     </>
   );
@@ -135,6 +140,7 @@ const TaskComponent = ({ task }: { task: Task }) => {
 const TaskBoard = ({ isSideBarVisible, onEdit }: TaskBoardProps) => {
   const { activeBoard } = useActiveTaskBoard();
   const { taskBoards } = useTaskBoards();
+  const { activeTheme } = useTheme();
 
   return (
     <div
@@ -171,9 +177,19 @@ const TaskBoard = ({ isSideBarVisible, onEdit }: TaskBoardProps) => {
           </button>
         </div>
       ) : (
-        activeBoard?.columns.map((col) => (
-          <ColumnComponent key={col.id} column={col} />
-        ))
+        <>
+          {activeBoard?.columns.map((col) => (
+            <ColumnComponent key={col.id} column={col} />
+          ))}
+          <h3
+            onClick={() => onEdit()}
+            className={`rounded w-[17.5rem] flex items-center justify-center font-bold text-xl text-[#828FA3] ${
+              activeTheme === "myTheme" ? "bg-[#EEF2FE]" : "bg-base-200"
+            }`}
+          >
+            +New Column
+          </h3>
+        </>
       )}
     </div>
   );
