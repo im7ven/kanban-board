@@ -154,20 +154,16 @@ const TaskBoard = ({ isSideBarVisible, onEdit }: TaskBoardProps) => {
       }`}
     >
       {taskBoards && taskBoards.length < 1 ? (
-        <p className="text-white text-lg text-center">
-          <ThemeText>
-            You Currently have no boards. Create a new board to get started.
-          </ThemeText>
+        <p className="text-[#828FA3] text-lg text-center">
+          You Currently have no boards. Create a new board to get started.
         </p>
       ) : activeBoard && activeBoard?.columns.length < 1 ? (
         <div className="flex flex-col justify-center gap-3">
           <p
-            className="text-white text-lg text-center
+            className="text-[#828FA3] text-lg text-center
           "
           >
-            <ThemeText>
-              This board is empty. Create a new column to get started.
-            </ThemeText>
+            This board is empty. Create a new column to get started.
           </p>
           <button
             onClick={() => onEdit()}

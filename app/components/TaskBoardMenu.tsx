@@ -13,15 +13,19 @@ const TaskBoardMenu = ({ onShowSideBar }: { onShowSideBar?: () => void }) => {
   }
 
   if (authenticated === false) {
-    return <p>Please sign in to view taskBoards</p>;
+    return (
+      <p className="mt-3 text-center font-semibold">
+        Please sign in to view taskBoards
+      </p>
+    );
   }
-
-  console.log("Active:", activeBoard);
 
   return (
     <div className="flex flex-col md:flex-1 md:mt-7">
       <div className="md:flex-1">
-        <h2 className="mb-3 ml-3">All Boards ({taskBoards?.length})</h2>
+        <h2 className="mb-3 ml-3 font-bold text-[#828FA3]">
+          All Boards ({taskBoards?.length})
+        </h2>
 
         <ul>
           {isLoading && (
