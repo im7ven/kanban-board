@@ -7,6 +7,7 @@ import { updateSubtaskStatus, updateTaskStatus } from "../serverActions";
 import { useQueryClient } from "@tanstack/react-query";
 import useTheme from "../zustand/themeStore";
 import ThemeText from "./ThemeText";
+import EditTaskModal from "./EditTaskModal";
 
 interface TaskBoardProps {
   isSideBarVisible: boolean;
@@ -25,22 +26,19 @@ const ColumnComponent = ({ column }: { column: Column }) => {
 };
 
 const TaskComponent = ({ task }: { task: Task }) => {
-  const [localTask, setLocalTask] = useState(task);
   const editTaskModal = useRef<HTMLDialogElement>(null);
   const queryClient = useQueryClient();
   const { activeBoard } = useActiveTaskBoard();
   const { activeTheme } = useTheme();
 
   const handleSubtaskStatusChange = async (subtaskId: number) => {
-    const subtaskIndex = localTask.subtasks.findIndex(
-      (sub) => sub.id === subtaskId
-    );
-    const updatedSubtasks = [...localTask.subtasks];
+    const subtaskIndex = task.subtasks.findIndex((sub) => sub.id === subtaskId);
+    const updatedSubtasks = [...task.subtasks];
     updatedSubtasks[subtaskIndex].status =
       !updatedSubtasks[subtaskIndex].status;
 
     await updateSubtaskStatus(subtaskId, updatedSubtasks[subtaskIndex].status);
-    setLocalTask({ ...localTask, subtasks: updatedSubtasks });
+    queryClient.invalidateQueries(["taskBoards"]);
   };
 
   const handleTaskStatusChange = async (
@@ -48,12 +46,12 @@ const TaskComponent = ({ task }: { task: Task }) => {
   ) => {
     const newColumnId = parseInt(e.target.value);
 
-    await updateTaskStatus(localTask.id, newColumnId);
-    setLocalTask({
-      ...localTask,
-      column: { ...localTask.column, id: newColumnId },
-    });
+    await updateTaskStatus(task.id, newColumnId);
     queryClient.invalidateQueries(["taskBoards"]);
+  };
+
+  const handleCloseCurrentModal = () => {
+    editTaskModal.current?.close();
   };
 
   return (
@@ -62,20 +60,18 @@ const TaskComponent = ({ task }: { task: Task }) => {
         <div className="modal-box">
           <div className="flex justify-between">
             <h2 className="font-bold ">
-              <ThemeText>{localTask.title}</ThemeText>
+              <ThemeText>{task.title}</ThemeText>
             </h2>
-            <button>
-              <SlOptionsVertical />
-            </button>
+            <EditTaskModal onOpen={handleCloseCurrentModal} task={task} />
           </div>
-          <p className="py-4">{localTask.description}</p>
+          <p className="py-4">{task.description}</p>
           <p className="my-3 text-sm">
-            {`Subtasks (${
-              localTask.subtasks.filter((sub) => sub.status).length
-            } / ${localTask.subtasks.length})`}
+            {`Subtasks (${task.subtasks.filter((sub) => sub.status).length} / ${
+              task.subtasks.length
+            })`}
           </p>
           <ul className="space-y-2">
-            {localTask.subtasks.map((sub) => (
+            {task.subtasks.map((sub) => (
               <li
                 className={`p-2 bg-base-200 rounded-md ${
                   sub.status === true ? "line-through" : ""
@@ -103,10 +99,9 @@ const TaskComponent = ({ task }: { task: Task }) => {
             </div>
             <select
               className="select select-bordered"
-              value={localTask.column.id.toString()}
+              value={task.column.id.toString()}
               onChange={handleTaskStatusChange}
             >
-              {/* Add options dynamically based on columns */}
               {activeBoard?.columns.map((col) => (
                 <option key={col.id} value={col.id}>
                   {col.title}
@@ -127,11 +122,11 @@ const TaskComponent = ({ task }: { task: Task }) => {
         }`}
       >
         <h3 className="font-bold text-md">
-          <ThemeText>{localTask.title}</ThemeText>
+          <ThemeText>{task.title}</ThemeText>
         </h3>
         <p className="text-sm">{`${
-          localTask.subtasks.filter((sub) => sub.status).length
-        }/${localTask.subtasks.length} Subtasks Completed`}</p>
+          task.subtasks.filter((sub) => sub.status).length
+        }/${task.subtasks.length} Subtasks Completed`}</p>
       </div>
     </>
   );
