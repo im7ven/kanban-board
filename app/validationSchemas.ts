@@ -17,7 +17,7 @@ export const createTaskBoardSchema = z.object({
     .optional(),
 });
 
-export const taskSchema = z.object({
+export const createTaskSchema = z.object({
   title: z
     .string()
     .min(1, "Title is required.")
@@ -39,6 +39,25 @@ export const taskSchema = z.object({
     .optional(),
 });
 
+export const updateTaskSchema = z.object({
+  title: z
+    .string()
+    .min(1, "Title is required.")
+    .max(255, "Maximum of 255 characters."),
+  description: z
+    .string()
+    .min(1, "Description is required")
+    .max(255, "Maximum of 255 characters."),
+  subtasks: z.array(
+    z.object({
+      id: z.number().optional(),
+      description: z
+        .string()
+        .min(1, "Title is required when assigning subtasks to tasks.")
+        .max(35, "Maximum of 35 characters."),
+    })
+  ),
+});
 export const updateTaskBoardSchema = z.object({
   title: z
     .string()
