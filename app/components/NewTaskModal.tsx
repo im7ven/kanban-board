@@ -36,7 +36,7 @@ const NewTaskModal = ({ onEdit }: { onEdit: () => void }) => {
     },
   });
 
-  const { fields, append, remove } = useFieldArray({
+  const { fields, append, remove, replace } = useFieldArray({
     name: "subtasks",
     control,
   });
@@ -57,6 +57,7 @@ const NewTaskModal = ({ onEdit }: { onEdit: () => void }) => {
           queryKey: ["taskBoards"],
         });
         reset();
+        replace([]);
         newTaskModal.current?.close();
       },
     }
@@ -70,6 +71,7 @@ const NewTaskModal = ({ onEdit }: { onEdit: () => void }) => {
     newTaskModal.current?.close();
     clearErrors("title");
     reset();
+    replace([]);
   };
 
   return (

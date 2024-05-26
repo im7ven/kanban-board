@@ -34,7 +34,7 @@ const NewTaskBoardModal = () => {
     resolver: zodResolver(createTaskBoardSchema),
   });
 
-  const { fields, remove, append } = useFieldArray({
+  const { fields, remove, append, replace } = useFieldArray({
     name: "columns",
     control,
   });
@@ -43,6 +43,7 @@ const NewTaskBoardModal = () => {
     newTaskBoardModal.current?.close();
     clearErrors("title");
     reset();
+    replace([]);
   };
 
   const onSubmit = (data: TaskBoardForm) => {
@@ -52,6 +53,7 @@ const NewTaskBoardModal = () => {
           queryKey: ["taskBoards"],
         });
         reset();
+        replace([]);
         newTaskBoardModal.current?.close();
       },
     });

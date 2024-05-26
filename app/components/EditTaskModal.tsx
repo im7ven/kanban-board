@@ -38,6 +38,7 @@ const EditTaskModal = ({ onOpen, task }: Props) => {
         queryKey: ["taskBoards"],
       });
       reset(data);
+      replace([]);
       editModalRef.current?.close();
     },
   });
@@ -56,7 +57,7 @@ const EditTaskModal = ({ onOpen, task }: Props) => {
     },
   });
 
-  const { fields, append, remove } = useFieldArray({
+  const { fields, append, remove, replace } = useFieldArray({
     name: "subtasks",
     control,
   });

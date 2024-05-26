@@ -36,7 +36,7 @@ const EditTaskBoardModal: React.FC<Props> = ({ editModalRef }) => {
     resolver: zodResolver(updateTaskBoardSchema),
   });
 
-  const { fields, append, remove } = useFieldArray({
+  const { fields, append, remove, replace } = useFieldArray({
     name: "columns",
     control,
   });
@@ -50,6 +50,8 @@ const EditTaskBoardModal: React.FC<Props> = ({ editModalRef }) => {
       queryClient.invalidateQueries({
         queryKey: ["taskBoards"],
       });
+      reset();
+      replace([]);
       editModalRef.current?.close();
     },
   });
