@@ -5,6 +5,7 @@ import { SlOptionsVertical } from "react-icons/sl";
 import useActiveTaskBoard from "../zustand/store";
 import useTaskBoards from "../hooks/useTaskBoards";
 import useTheme from "../zustand/themeStore";
+import ThemeText from "./ThemeText";
 
 const BoardOption = ({ onEdit }: { onEdit: () => void }) => {
   const deleteBoardModal = useRef<HTMLDialogElement>(null);
@@ -88,7 +89,9 @@ const DeleteBoardModal = ({
   return (
     <dialog ref={deleteBoardModal} id="deleteBoardModal" className="modal">
       <div className="modal-box">
-        <h3 className="font-bold text-lg text-white">Delete this board?</h3>
+        <h3 className="font-bold text-lg">
+          <ThemeText>Delete this board?</ThemeText>
+        </h3>
         <p className="py-4">{`Are you sure you want to delete the "${activeBoard?.title}"? This action will delete any columns, tasks, and subtasks created within this board and cannot be reversed.`}</p>
         <div className="flex gap-3">
           <button className="btn grow" onClick={onCancel}>
