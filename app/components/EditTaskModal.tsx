@@ -10,16 +10,21 @@ import useActiveTaskBoard from "../zustand/store";
 import { RiCloseLine } from "react-icons/ri";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
+import ThemeText from "./ThemeText";
 
-interface Props {
+type EditModalProps = {
   task: Task;
   onOpen: () => void;
-}
+  deleteModalRef: React.RefObject<HTMLDialogElement>;
+};
+
+type DeleteModalProps = Omit<EditModalProps, "onOpen">;
 
 type UpdateTaskForm = z.infer<typeof updateTaskSchema>;
 
-const EditTaskModal = ({ onOpen, task }: Props) => {
+const EditTaskModal = ({ onOpen, task }: EditModalProps) => {
   const editModalRef = useRef<HTMLDialogElement>(null);
+  const deleteTaskModal = useRef<HTMLDialogElement>(null);
   const { activeTheme } = useTheme();
   const queryClient = useQueryClient();
 
@@ -67,6 +72,8 @@ const EditTaskModal = ({ onOpen, task }: Props) => {
     editModalRef.current?.showModal();
   };
 
+  const handleOpenDeleteModal = () => [deleteTaskModal.current?.showModal()];
+
   const onSubmit = (data: UpdateTaskForm) => {
     console.log("Form data being submitted:", data);
     mutation.mutate(data);
@@ -89,11 +96,15 @@ const EditTaskModal = ({ onOpen, task }: Props) => {
           >
             Edit Task
           </li>
-          <li className="text-red-500 hover:font-bold p-2 rounded-lg cursor-pointer">
+          <li
+            onClick={handleOpenDeleteModal}
+            className="text-red-500 hover:font-bold p-2 rounded-lg cursor-pointer"
+          >
             Delete Task
           </li>
         </ul>
       </details>
+      <DeleteTaskModal task={task} deleteModalRef={deleteTaskModal} />
 
       <dialog ref={editModalRef} id="editModalRef" className="modal">
         <div className="modal-box">
@@ -173,6 +184,49 @@ const EditTaskModal = ({ onOpen, task }: Props) => {
         ></div>
       </dialog>
     </div>
+  );
+};
+
+const DeleteTaskModal = ({ deleteModalRef, task }: DeleteModalProps) => {
+  const queryClient = useQueryClient();
+  const handleCancel = () => {
+    deleteModalRef.current?.close();
+  };
+  const handleDelete = async (task: Task) => {
+    await axios.delete(`api/tasks/${task.id.toString()}`);
+  };
+  const mutation = useMutation(() => handleDelete(task), {
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["taskBoards"],
+      });
+      handleCancel();
+    },
+  });
+
+  return (
+    <dialog ref={deleteModalRef} id="my_modal_2" className="modal">
+      <div className="modal-box">
+        <h3 className="font-bold text-lg">
+          <ThemeText>Delete this task?</ThemeText>
+        </h3>
+        <p className="py-4">{`Are you sure you want to delete the "${task?.title}"? This action cannot be reversed.`}</p>
+        <div className="flex gap-3">
+          <button className="btn grow" onClick={handleCancel}>
+            Cancel
+          </button>
+          <button
+            onClick={() => mutation.mutate()}
+            className="btn btn-error grow"
+          >
+            Delete
+          </button>
+        </div>
+      </div>
+      <form method="dialog" className="modal-backdrop">
+        <button>close</button>
+      </form>
+    </dialog>
   );
 };
 
