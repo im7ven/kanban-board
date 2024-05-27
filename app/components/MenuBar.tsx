@@ -12,30 +12,18 @@ import useTheme from "../zustand/themeStore";
 type Status = "authenticated" | "loading" | "unauthenticated";
 
 const MenuBar = ({ onEdit }: { onEdit: () => void }) => {
-  const { status, data: session } = useSession();
   const { activeBoard } = useActiveTaskBoard();
   return (
     <div className=" max-w-[100vw] grow flex justify-between items-center px-2 md:px-6 min-h-[4rem]  md:min-h-[5rem] lg:h-[6rem] border-b-[1px] border-zinc-600">
       <div className="flex items-center gap-1">
-        {status === "loading" ? (
-          <div className="skeleton w-[100px] h-10"></div>
-        ) : (
-          <>
-            <MenuDropDown />
-            <h2 className="md:text-xl font-bold">
-              <ThemeText>
-                {activeBoard ? activeBoard.title : "No Active Board"}
-              </ThemeText>
-            </h2>
-          </>
-        )}
+        <MenuDropDown />
+        <h2 className="md:text-xl font-bold">
+          <ThemeText>
+            {activeBoard ? activeBoard.title : "No Active Board"}
+          </ThemeText>
+        </h2>
       </div>
-      {status === "loading" ? (
-        <div className="skeleton w-[140px] h-10"></div>
-      ) : (
-        <NewTaskModal onEdit={onEdit} />
-      )}
-
+      <NewTaskModal onEdit={onEdit} />
       <AuthStatus />
     </div>
   );
@@ -63,10 +51,6 @@ const MenuDropDown = () => {
 const AuthStatus = () => {
   const { status, data: session } = useSession();
   const { activeTheme } = useTheme();
-
-  if (status === "loading") {
-    return <div className=" rounded-full skeleton w-[40px] h-10"></div>;
-  }
 
   if (status === "unauthenticated") {
     return (
