@@ -5,9 +5,11 @@ import Sidebar from "./Sidebar";
 import TaskBoard from "./TaskBoard";
 import MenuBar from "./MenuBar";
 import EditTaskBoardModal from "./EditTaskBoardModal";
+import { useSession } from "next-auth/react";
 
 const UserContent = () => {
   const [showSideBar, setShowSideBar] = useState(true);
+  const { status } = useSession();
 
   const handleShowSideBar = () => {
     setShowSideBar(!showSideBar);
@@ -18,6 +20,14 @@ const UserContent = () => {
   const handleOpenEditModal = () => {
     editModalRef.current?.showModal();
   };
+
+  if (status === "loading") {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <span className="loading loading-bars loading-lg"></span>
+      </div>
+    );
+  }
 
   return (
     <div className="flex ">
