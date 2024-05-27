@@ -8,6 +8,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import useTheme from "../zustand/themeStore";
 import ThemeText from "./ThemeText";
 import EditTaskModal from "./EditTaskModal";
+import { useSession } from "next-auth/react";
 
 interface TaskBoardProps {
   isSideBarVisible: boolean;
@@ -141,6 +142,7 @@ const TaskBoard = ({ isSideBarVisible, onEdit }: TaskBoardProps) => {
   const { activeBoard } = useActiveTaskBoard();
   const { taskBoards } = useTaskBoards();
   const { activeTheme } = useTheme();
+  const { status } = useSession();
 
   return (
     <div
@@ -177,14 +179,16 @@ const TaskBoard = ({ isSideBarVisible, onEdit }: TaskBoardProps) => {
           {activeBoard?.columns.map((col) => (
             <ColumnComponent key={col.id} column={col} />
           ))}
-          <div
-            onClick={() => onEdit()}
-            className={`rounded w-[17.5rem] flex items-center justify-center font-bold text-xl text-[#828FA3] ${
-              activeTheme === "myTheme" ? "bg-[#EEF2FE]" : "bg-base-200"
-            }`}
-          >
-            <h3>+New Column</h3>
-          </div>
+          {status === "authenticated" && (
+            <div
+              onClick={() => onEdit()}
+              className={`rounded w-[17.5rem] flex items-center justify-center font-bold text-xl text-[#828FA3] ${
+                activeTheme === "myTheme" ? "bg-[#EEF2FE]" : "bg-base-200"
+              }`}
+            >
+              <h3>+New Column</h3>
+            </div>
+          )}
         </>
       )}
     </div>
