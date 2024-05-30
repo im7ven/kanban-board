@@ -12,6 +12,7 @@ import { RiCloseLine } from "react-icons/ri";
 import useActiveTaskBoard from "../zustand/store";
 import useTaskBoards from "../hooks/useTaskBoards";
 import { TaskBoard } from "../types";
+import ThemeText from "./ThemeText";
 
 type TaskBoardForm = z.infer<typeof createTaskBoardSchema>;
 
@@ -71,7 +72,9 @@ const NewTaskBoardModal = () => {
       </div>
       <dialog ref={newTaskBoardModal} id="newTaskBoardModal" className="modal">
         <div className="modal-box">
-          <h2 className="mb-3">Create Task Board</h2>
+          <h2 className="mb-3 font-bold">
+            <ThemeText>Create Task Board</ThemeText>
+          </h2>
           <form onSubmit={handleSubmit(onSubmit)}>
             <label className="input input-bordered flex items-center gap-2">
               Title

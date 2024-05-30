@@ -108,7 +108,9 @@ const EditTaskModal = ({ onOpen, task }: EditModalProps) => {
 
       <dialog ref={editModalRef} id="editModalRef" className="modal">
         <div className="modal-box">
-          <h3 className="font-bold text-lg">{`Edit - ${task.title}`}</h3>
+          <h2 className="font-bold">
+            <ThemeText>{`Edit - ${task.title}`}</ThemeText>
+          </h2>
           <form onSubmit={handleSubmit(onSubmit)}>
             <label className="form-control w-full mb-3">
               <div className="label">
