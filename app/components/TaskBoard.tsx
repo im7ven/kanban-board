@@ -182,11 +182,13 @@ const TaskBoard = ({ isSideBarVisible, onEdit }: TaskBoardProps) => {
           {status === "authenticated" && (
             <div
               onClick={() => onEdit()}
-              className={`rounded w-[17.5rem] flex items-center justify-center font-bold text-xl text-[#828FA3] ${
+              className={`rounded w-[17.5rem] flex items-center justify-center font-bold text-xl text-[#828FA3] shadow hover:bg-base-300 transition ${
                 activeTheme === "myTheme" ? "bg-[#EEF2FE]" : "bg-base-200"
               }`}
             >
-              <h3>+New Column</h3>
+              <h3 className="tracking-wide uppercase font-extralight">
+                +New Column
+              </h3>
             </div>
           )}
         </>
