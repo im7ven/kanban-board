@@ -1,12 +1,22 @@
 import { updateTaskSchema } from "@/app/validationSchemas";
 import prisma from "@/prisma/client";
-import { error } from "console";
 import { NextRequest, NextResponse } from "next/server";
+import { getServerSession } from "next-auth";
+import authOptions from "@/app/auth/authOptions";
 
 export async function PATCH(
   request: NextRequest,
   { params }: { params: { id: string } }
 ) {
+  const session = await getServerSession(authOptions);
+
+  if (!session || !session.user || !session.user.email) {
+    return NextResponse.json(
+      { error: "User not authenticated" },
+      { status: 401 }
+    );
+  }
+
   const body = await request.json();
 
   const validation = updateTaskSchema.safeParse(body);
@@ -17,11 +27,25 @@ export async function PATCH(
 
   const existingTask = await prisma.task.findUnique({
     where: { id: parseInt(params.id) },
-    include: { subtasks: true },
+    include: {
+      subtasks: true,
+      column: {
+        include: {
+          taskBoard: true,
+        },
+      },
+    },
   });
 
   if (!existingTask) {
     return NextResponse.json({ error: "Task not found" }, { status: 404 });
+  }
+
+  if (existingTask.column.taskBoard.createdBy !== session.user.email) {
+    return NextResponse.json(
+      { error: "User not authorized to update this task" },
+      { status: 403 }
+    );
   }
 
   const existingSubIds = existingTask.subtasks.map((sub) => sub.id);
@@ -68,12 +92,35 @@ export async function DELETE(
   req: NextRequest,
   { params }: { params: { id: string } }
 ) {
+  const session = await getServerSession(authOptions);
+
+  if (!session || !session.user || !session.user.email) {
+    return NextResponse.json(
+      { error: "User not authenticated" },
+      { status: 401 }
+    );
+  }
+
   const existingTask = await prisma.task.findUnique({
     where: { id: parseInt(params.id) },
+    include: {
+      column: {
+        include: {
+          taskBoard: true,
+        },
+      },
+    },
   });
 
   if (!existingTask) {
-    return NextResponse.json({ error: "Invalid task" }, { status: 404 });
+    return NextResponse.json({ error: "Task not found" }, { status: 404 });
+  }
+
+  if (existingTask.column.taskBoard.createdBy !== session.user.email) {
+    return NextResponse.json(
+      { error: "User not authorized to delete this task" },
+      { status: 403 }
+    );
   }
 
   await prisma.task.delete({

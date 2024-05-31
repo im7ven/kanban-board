@@ -6,6 +6,7 @@ import { createTaskBoardSchema } from "../../validationSchemas";
 
 export async function GET(request: NextRequest) {
   const session = await getServerSession(authOptions);
+
   if (!session || !session.user || !session.user.email) {
     return NextResponse.json(
       { error: "User not authenticated" },
@@ -42,10 +43,6 @@ export async function POST(request: NextRequest | any) {
   const body = await request.json();
   const validation = createTaskBoardSchema.safeParse(body);
 
-  if (!validation.success) {
-    return NextResponse.json(validation.error.errors, { status: 400 });
-  }
-
   const session = await getServerSession(authOptions);
 
   if (!session || !session.user || !session.user.email) {
@@ -53,6 +50,10 @@ export async function POST(request: NextRequest | any) {
       { error: "User not authenticated" },
       { status: 401 }
     );
+  }
+
+  if (!validation.success) {
+    return NextResponse.json(validation.error.errors, { status: 400 });
   }
 
   const newTaskBoard = await prisma.taskBoard.create({
