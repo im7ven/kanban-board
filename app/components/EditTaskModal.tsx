@@ -15,7 +15,7 @@ import ThemeText from "./ThemeText";
 type EditModalProps = {
   task: Task;
   onOpen: () => void;
-  deleteModalRef: React.RefObject<HTMLDialogElement>;
+  deleteModalRef?: React.RefObject<HTMLDialogElement>;
 };
 
 type DeleteModalProps = Omit<EditModalProps, "onOpen">;
@@ -192,7 +192,7 @@ const EditTaskModal = ({ onOpen, task }: EditModalProps) => {
 const DeleteTaskModal = ({ deleteModalRef, task }: DeleteModalProps) => {
   const queryClient = useQueryClient();
   const handleCancel = () => {
-    deleteModalRef.current?.close();
+    deleteModalRef?.current?.close();
   };
   const handleDelete = async (task: Task) => {
     await axios.delete(`api/tasks/${task.id.toString()}`);
