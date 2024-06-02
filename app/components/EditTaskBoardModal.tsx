@@ -1,14 +1,14 @@
-import React, { useEffect, useState } from "react";
-import useActiveTaskBoard from "../zustand/store";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
-import { useForm, useFieldArray, FormState } from "react-hook-form";
+import React, { useEffect, useState } from "react";
+import { useFieldArray, useForm } from "react-hook-form";
+import { RiCloseLine } from "react-icons/ri";
 import { z } from "zod";
 import { updateTaskBoardSchema } from "../validationSchemas";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { RiCloseLine } from "react-icons/ri";
-import ValidationError from "./ValidationError";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import useActiveTaskBoard from "../zustand/store";
 import ThemeText from "./ThemeText";
+import ValidationError from "./ValidationError";
 
 interface Props {
   editModalRef: React.RefObject<HTMLDialogElement>;

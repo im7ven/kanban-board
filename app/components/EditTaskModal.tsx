@@ -1,15 +1,14 @@
-import React, { useRef } from "react";
-import { SlOptionsVertical } from "react-icons/sl";
-import { Task } from "../types";
-import useTheme from "../zustand/themeStore";
-import { useFieldArray, useForm } from "react-hook-form";
-import { z } from "zod";
-import { updateTaskSchema } from "../validationSchemas";
 import { zodResolver } from "@hookform/resolvers/zod";
-import useActiveTaskBoard from "../zustand/store";
-import { RiCloseLine } from "react-icons/ri";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
+import React, { useRef } from "react";
+import { useFieldArray, useForm } from "react-hook-form";
+import { RiCloseLine } from "react-icons/ri";
+import { SlOptionsVertical } from "react-icons/sl";
+import { z } from "zod";
+import { Task } from "../types";
+import { updateTaskSchema } from "../validationSchemas";
+import useTheme from "../zustand/themeStore";
 import ThemeText from "./ThemeText";
 
 type EditModalProps = {

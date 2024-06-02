@@ -1,14 +1,13 @@
-import useTaskBoards from "../hooks/useTaskBoards";
-import useActiveTaskBoard from "../zustand/store";
-import { Task, Column } from "../types";
-import { useRef, useState } from "react";
-import { SlOptionsVertical } from "react-icons/sl";
-import { updateSubtaskStatus, updateTaskStatus } from "../serverActions";
 import { useQueryClient } from "@tanstack/react-query";
-import useTheme from "../zustand/themeStore";
-import ThemeText from "./ThemeText";
-import EditTaskModal from "./EditTaskModal";
 import { useSession } from "next-auth/react";
+import { useRef } from "react";
+import useTaskBoards from "../hooks/useTaskBoards";
+import { updateSubtaskStatus, updateTaskStatus } from "../serverActions";
+import { Column, Task } from "../types";
+import useActiveTaskBoard from "../zustand/store";
+import useTheme from "../zustand/themeStore";
+import EditTaskModal from "./EditTaskModal";
+import ThemeText from "./ThemeText";
 
 interface TaskBoardProps {
   isSideBarVisible: boolean;

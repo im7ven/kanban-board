@@ -1,18 +1,14 @@
 "use client";
-import { useRef, useState } from "react";
-import { CgBoard } from "react-icons/cg";
-import { useFieldArray, useForm } from "react-hook-form";
-import axios from "axios";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { createTaskBoardSchema } from "../validationSchemas";
-import { z } from "zod";
-import ValidationError from "./ValidationError";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import axios from "axios";
+import { useRef } from "react";
+import { useFieldArray, useForm } from "react-hook-form";
 import { RiCloseLine } from "react-icons/ri";
-import useActiveTaskBoard from "../zustand/store";
-import useTaskBoards from "../hooks/useTaskBoards";
-import { TaskBoard } from "../types";
+import { z } from "zod";
+import { createTaskBoardSchema } from "../validationSchemas";
 import ThemeText from "./ThemeText";
+import ValidationError from "./ValidationError";
 
 type TaskBoardForm = z.infer<typeof createTaskBoardSchema>;
 

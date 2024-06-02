@@ -1,11 +1,11 @@
 "use client";
 
+import { useSession } from "next-auth/react";
 import { useRef, useState } from "react";
+import EditTaskBoardModal from "./EditTaskBoardModal";
+import MenuBar from "./MenuBar";
 import Sidebar from "./Sidebar";
 import TaskBoard from "./TaskBoard";
-import MenuBar from "./MenuBar";
-import EditTaskBoardModal from "./EditTaskBoardModal";
-import { useSession } from "next-auth/react";
 
 const UserContent = () => {
   const [showSideBar, setShowSideBar] = useState(true);

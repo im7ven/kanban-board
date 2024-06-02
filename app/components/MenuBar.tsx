@@ -3,11 +3,11 @@
 import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { RiArrowDropDownLine } from "react-icons/ri";
-import TaskBoardMenu from "./TaskBoardMenu";
-import NewTaskModal from "./NewTaskModal";
 import useActiveTaskBoard from "../zustand/store";
-import ThemeText from "./ThemeText";
 import useTheme from "../zustand/themeStore";
+import NewTaskModal from "./NewTaskModal";
+import TaskBoardMenu from "./TaskBoardMenu";
+import ThemeText from "./ThemeText";
 
 type Status = "authenticated" | "loading" | "unauthenticated";
 

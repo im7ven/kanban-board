@@ -1,8 +1,8 @@
 import { AiOutlineEyeInvisible } from "react-icons/ai";
 import { CgBoard } from "react-icons/cg";
-import NewTaskBoardModal from "./NewTaskBoardModal";
 import useTaskBoards from "../hooks/useTaskBoards";
 import useActiveTaskBoard from "../zustand/store";
+import NewTaskBoardModal from "./NewTaskBoardModal";
 import ThemeToggle from "./ThemeToggle";
 
 const TaskBoardMenu = ({ onShowSideBar }: { onShowSideBar?: () => void }) => {

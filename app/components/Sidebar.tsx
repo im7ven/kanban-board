@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from "react";
+import Image from "next/image";
+import { useEffect, useState } from "react";
 import { AiOutlineEye } from "react-icons/ai";
 import TaskBoardMenu from "./TaskBoardMenu";
-import Image from "next/image";
 import ThemeText from "./ThemeText";
 
 interface Props {
