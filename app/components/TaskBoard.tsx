@@ -146,7 +146,7 @@ const TaskBoard = ({ isSideBarVisible, onEdit }: TaskBoardProps) => {
   return (
     <div
       className={`bg-secondary gap-6 flex p-4 overflow-x-auto overflow-y-auto boardContainerHeight ${
-        isSideBarVisible ? "boardContainerWidth" : "w-[100vw] pl-[5rem]"
+        isSideBarVisible ? "boardContainerWidth" : "w-[100vw] md:pl-[5rem]"
       } ${
         (taskBoards && taskBoards.length < 1) ||
         (activeBoard && activeBoard?.columns.length < 1)
