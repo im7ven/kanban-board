@@ -38,6 +38,7 @@ const Sidebar = ({ sidebar, onShowSideBar }: Props) => {
                 width="60"
                 height="60"
                 alt="logo"
+                className="w-auto h-auto"
               />
               <h1 className=" font-bold text-white text-2xl self-center">
                 <ThemeText>KANBAN</ThemeText>
